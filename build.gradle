@@ -1,29 +1,23 @@
 buildscript {
     repositories {
-        maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net/"
-        }
+        maven { url = "https://maven.minecraftforge.net/" }
         maven {
             name 'FancyGradle'
             url 'https://gitlab.com/api/v4/projects/26758973/packages/maven'
         }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:5.1.64'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
         classpath group: 'wtf.gofancy.fancygradle', name: 'wtf.gofancy.fancygradle.gradle.plugin', version: '1.1.+'
+        classpath "org.spongepowered:mixingradle:0.7.+"
     }
 }
 
-plugins {
-    id "com.matthewprenger.cursegradle" version "1.4.0"
-    id 'com.modrinth.minotaur' version '2.2.0'
-}
-
-apply plugin: 'scala'
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'maven-publish'
+apply plugin: 'scala'
 apply plugin: 'wtf.gofancy.fancygradle'
+apply plugin: "org.spongepowered.mixin"
 
 fancyGradle {
     patches {
@@ -31,9 +25,12 @@ fancyGradle {
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 file "build.properties" withReader {
     def prop = new Properties()
     prop.load(it)
@@ -141,8 +138,17 @@ repositories {
         }
     }
     maven {
-        name "SquidDev" /* CC: Tweaked */
         url "https://squiddev.cc/maven/"
+        content {
+            includeGroup("org.squiddev")
+        }
+    }
+    maven {
+        url "https://maven2.bai.lol"
+        content {
+            includeGroup "lol.bai"
+            includeGroup "mcp.mobius.waila"
+        }
     }
     ivy {
         name 'asie dependency mirror'
@@ -163,9 +169,15 @@ repositories {
         }
     }
     maven {
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
         url "https://modmaven.dev"
         content {
             includeGroup "mezz.jei"
+            includeGroup "appeng"
+            includeGroup "mekanism"
         }
     }
     maven {
@@ -176,17 +188,7 @@ repositories {
         }
     }
     maven {
-        url "https://modmaven.dev/"
-        content {
-            includeGroup "appeng"
-            includeGroup "mekanism"
-        }
-    }
-    maven {
         url "https://proxy-maven.covers1624.net/"
-        content {
-            includeModule "net.minecraftforge", "Scorge"
-        }
     }
     mavenCentral()
 }
@@ -205,23 +207,21 @@ dependencies {
     // required for tests but cannot use implementation as that would clash with scorge at runtime
     compileOnly "org.scala-lang:scala-library:2.13.4"
     implementation "net.minecraftforge:Scorge:${config.scorge.version}"
-    embedded "com.typesafe:config:1.2.1"
+    //embedded "com.typesafe:config:1.2.1"
+    implementation "com.typesafe:config:1.2.1"
 
-    compileOnly fg.deobf("li.cil.tis3d:tis3d-1.16.5-forge:${config.tis3d.version}")
-    compileOnly fg.deobf("curse.maven:hwyla-${config.hwyla.projectId}:${config.hwyla.fileId}")
-    compileOnly fg.deobf("org.squiddev:cc-tweaked-${config.minecraft.version}:${config.cct.version}")
+    //compileOnly fg.deobf("li.cil.tis3d:tis3d-1.18.2-forge:${config.tis3d.version}")
+    compileOnly fg.deobf("mcp.mobius.waila:wthit-api:forge-${config.wthit.version}")
+    compileOnly fg.deobf("org.squiddev:cc-tweaked-${config.minecraft.version}:${config.cct.version}:api")
+    runtimeOnly fg.deobf("org.squiddev:cc-tweaked-${config.minecraft.version}:${config.cct.version}")
     compileOnly fg.deobf("curse.maven:cofh-core-69162:4022663") /* CoFHCore */
     compileOnly fg.deobf("curse.maven:thermal-foundation-222880:4022666") /* Thermal Foundation */
 
-    runtimeOnly fg.deobf("curse.maven:modernfix-790626:4714445")
+    //runtimeOnly fg.deobf("curse.maven:modernfix-${config.modernfix.modid}:${config.modernfix.fileid}")
 
-    provided fg.deobf("appeng:appliedenergistics2:${config.ae2.version}:api") {
-        transitive = false
-    }
+    compileOnly "appeng:appliedenergistics2:${config.ae2.version}:api"
 
-    provided fg.deobf("mekanism:Mekanism:${config.mekanism.version}:api") {
-        transitive = false
-    }
+    provided fg.deobf("mekanism:Mekanism:${config.mekanism.version}:api")
 
     provided fg.deobf("codechicken:CBMultipart:${config.cbmultipart.version}:universal") {
         exclude module: jeiSlug
@@ -230,25 +230,20 @@ dependencies {
 
     provided fg.deobf("codechicken:ChickenASM:${config.casm.version}")
 
-    provided fg.deobf("mezz.jei:${jeiSlug}:${config.jei.version}")
+    provided fg.deobf("mezz.jei:${jeiSlug}-common-api:${config.jei.version}")
+    provided fg.deobf("mezz.jei:${jeiSlug}-forge-api:${config.jei.version}")
     provided fg.deobf("codechicken:CodeChickenLib:${config.ccl.version}:universal")
 
-    provided fg.deobf("mrtjp:ProjectRed:${config.projred.version}:core") {
-        exclude module: "CodeChickenLib"
-        exclude module: jeiSlug
-        exclude module: "CBMultipart"
-    }
+    provided fg.deobf("mrtjp:ProjectRed:${config.projred.version}:core")
+    provided fg.deobf("mrtjp:ProjectRed:${config.projred.version}:integration")
 
-    provided fg.deobf("mrtjp:ProjectRed:${config.projred.version}:integration") {
-        exclude module: "NotEnoughItems"
-        exclude module: "CodeChickenLib"
-        exclude module: "jei_1.12"
-        exclude module: "ForgeMultipart"
-    }
-
-    embedded name: 'OC-LuaJ', version: '20220907.1', ext: 'jar'
-    embedded name: 'OC-JNLua', version: '20230530.0', ext: 'jar'
-    embedded name: 'OC-JNLua-Natives', version: '20220928.1', ext: 'jar'
+    //embedded name: 'OC-LuaJ', version: '20220907.1', ext: 'jar'
+    //embedded name: 'OC-JNLua', version: '20230530.0', ext: 'jar'
+    //embedded name: 'OC-JNLua-Natives', version: '20220928.1', ext: 'jar'
+    //implementation "com.typesafe:config:1.2.1"
+    implementation group: '', name: 'OC-LuaJ', version: '20220907.1', ext: 'jar'
+    implementation group: '', name: 'OC-JNLua', version: '20230530.0', ext: 'jar'
+    implementation group: '', name: 'OC-JNLua-Natives', version: '20220928.1', ext: 'jar'
 
     testImplementation "org.scala-lang:scala-library:2.13.4"
     testImplementation "junit:junit:4.13"
@@ -316,52 +311,4 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives apiJar
     archives javadocJar
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = project.group
-            artifactId = project.name
-            version = mod_version
-            artifact jar
-            artifact apiJar
-            artifact javadocJar
-        }
-    }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = System.getenv("GITHUB_MAVEN_URL") ?: ""
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-}
-
-curseforge {
-    apiKey = System.getenv('CURSEFORGE_API_KEY') ?: ""
-    project {
-        id = config.curse.project.id
-        releaseType = System.getenv('CURSEFORGE_RELEASE_TYPE') ?: "alpha"
-        changelogType = "markdown"
-        changelog = System.getenv("CHANGELOG") ?: "Changelog not available."
-        addGameVersion config.minecraft.version
-        addGameVersion "Java 8"
-        addGameVersion "Forge"
-    }
-}
-
-modrinth {
-    token = System.getenv("MODRINTH_API_KEY") ?: ""
-    projectId = config.modrinth.project.id
-    changelog = System.getenv("CHANGELOG") ?: "Changelog not available."
-    versionNumber = mod_version
-    versionName = "${rootProject.name}-${version}"
-    versionType = System.getenv('MODRINTH_RELEASE_TYPE') ?: "alpha"
-    uploadFile = jar
-    gameVersions = [config.minecraft.version]
-    loaders = ["forge"]
 }
