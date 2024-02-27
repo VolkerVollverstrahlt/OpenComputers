@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public final class DriverRedstoneControl extends DriverSidedTileEntity {
     @Override
-    public Class<?> getTileEntityClass() {
+    public Class<?> getBlockEntityClass() {
         return IRedstoneControllable.class;
     }
 
@@ -31,18 +31,18 @@ public final class DriverRedstoneControl extends DriverSidedTileEntity {
 
         @Callback(doc = "function():boolean --  Returns whether the control is disabled.")
         public Object[] getControlDisable(final Context context, final Arguments args) {
-            return new Object[]{tileEntity.getMode() == IRedstoneControllable.ControlMode.DISABLED};
+            return new Object[]{blockEntity.getMode() == IRedstoneControllable.ControlMode.DISABLED};
         }
 
         @Callback(doc = "function():int --  Returns the control status.")
         public Object[] getControlSetting(final Context context, final Arguments args) {
-            return new Object[]{tileEntity.getMode().ordinal()};
+            return new Object[]{blockEntity.getMode().ordinal()};
 
         }
 
         @Callback(doc = "function():string --  Returns the control status.")
         public Object[] getControlSettingName(final Context context, final Arguments args) {
-            return new Object[]{tileEntity.getMode().name()};
+            return new Object[]{blockEntity.getMode().name()};
         }
 
         @Callback(doc = "function(int):string --  Returns the name of the given control")
@@ -53,12 +53,12 @@ public final class DriverRedstoneControl extends DriverSidedTileEntity {
 
         @Callback(doc = "function():boolean --  Returns whether the component is powered.")
         public Object[] isPowered(final Context context, final Arguments args) {
-            return new Object[]{tileEntity.getState()};
+            return new Object[]{blockEntity.getState()};
         }
 
         @Callback(doc = "function():boolean --  Sets the control to disabled.")
         public Object[] setControlDisable(final Context context, final Arguments args) {
-            tileEntity.setControl(0, IRedstoneControllable.ControlMode.DISABLED);
+            blockEntity.setControl(0, IRedstoneControllable.ControlMode.DISABLED);
             return new Object[]{true};
         }
 
@@ -66,11 +66,11 @@ public final class DriverRedstoneControl extends DriverSidedTileEntity {
         public Object[] setControlSetting(final Context context, final Arguments args) {
             if (args.isInteger(0)) {
                 int threshold = args.optInteger(1, 8);
-                tileEntity.setControl(threshold, IRedstoneControllable.ControlMode.values()[args.checkInteger(0)]);
+                blockEntity.setControl(threshold, IRedstoneControllable.ControlMode.values()[args.checkInteger(0)]);
                 return new Object[]{true};
             } else {
                 int threshold = args.optInteger(1, 8);
-                tileEntity.setControl(threshold, IRedstoneControllable.ControlMode.valueOf(args.checkString(0)));
+                blockEntity.setControl(threshold, IRedstoneControllable.ControlMode.valueOf(args.checkString(0)));
                 return new Object[]{true};
             }
 

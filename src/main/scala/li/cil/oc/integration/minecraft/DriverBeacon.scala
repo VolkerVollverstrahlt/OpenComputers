@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriverBeacon extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[BeaconTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[BeaconTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[BeaconTileEntity])
@@ -31,17 +31,17 @@ object DriverBeacon extends DriverSidedTileEntity {
 
     @Callback(doc = "function():number -- Get the number of levels for this beacon.")
     def getLevels(context: Context, args: Arguments): Array[AnyRef] = {
-      result(tileEntity.getLevels)
+      result(blockEntity.getLevels)
     }
 
     @Callback(doc = "function():string -- Get the name of the active primary effect.")
     def getPrimaryEffect(context: Context, args: Arguments): Array[AnyRef] = {
-      result(getEffectName(tileEntity.primaryPower))
+      result(getEffectName(blockEntity.primaryPower))
     }
 
     @Callback(doc = "function():string -- Get the name of the active secondary effect.")
     def getSecondaryEffect(context: Context, args: Arguments): Array[AnyRef] = {
-      result(getEffectName(tileEntity.secondaryPower))
+      result(getEffectName(blockEntity.secondaryPower))
     }
 
     private def getEffectName(effect: Effect): String = {

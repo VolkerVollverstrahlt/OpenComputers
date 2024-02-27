@@ -19,7 +19,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.server.ServerLifecycleHooks
 
 object DriverCommandBlock extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[CommandBlockTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[CommandBlockTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[CommandBlockTileEntity])
@@ -31,13 +31,13 @@ object DriverCommandBlock extends DriverSidedTileEntity {
 
     @Callback(direct = true, doc = "function():string -- Get the command currently set in this command block.")
     def getCommand(context: Context, args: Arguments): Array[AnyRef] = {
-      result(tileEntity.getCommandBlock.getCommand)
+      result(blockEntity.getCommandBlock.getCommand)
     }
 
     @Callback(doc = "function(value:string) -- Set the specified command for the command block.")
     def setCommand(context: Context, args: Arguments): Array[AnyRef] = {
-      tileEntity.getCommandBlock.setCommand(args.checkString(0))
-      tileEntity.getLevel.sendBlockUpdated(tileEntity.getBlockPos, tileEntity.getLevel.getBlockState(tileEntity.getBlockPos), tileEntity.getLevel.getBlockState(tileEntity.getBlockPos), 3)
+      blockEntity.getCommandBlock.setCommand(args.checkString(0))
+      blockEntity.getLevel.sendBlockUpdated(blockEntity.getBlockPos, blockEntity.getLevel.getBlockState(blockEntity.getBlockPos), blockEntity.getLevel.getBlockState(blockEntity.getBlockPos), 3)
       result(true)
     }
 
@@ -47,8 +47,8 @@ object DriverCommandBlock extends DriverSidedTileEntity {
       if (!ServerLifecycleHooks.getCurrentServer.isCommandBlockEnabled) {
         result(null, "command blocks are disabled")
       } else {
-        val commandSender = tileEntity.getCommandBlock
-        commandSender.performCommand(tileEntity.getLevel)
+        val commandSender = blockEntity.getCommandBlock
+        commandSender.performCommand(blockEntity.getLevel)
         result(commandSender.getSuccessCount, commandSender.getLastOutput.getString)
       }
     }

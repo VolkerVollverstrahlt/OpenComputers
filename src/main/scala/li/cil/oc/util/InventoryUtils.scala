@@ -45,7 +45,7 @@ object InventoryUtils {
       (!checkNBT || ItemStack.tagMatches(stackA, stackB))
 
   /**
-   * Retrieves an actual inventory implementation for a specified world coordinate,
+   * Retrieves an actual inventory implementation for a specified level coordinate,
    * complete with a reference to the source of said implementation.
    */
   def inventorySourceAt(position: BlockPosition, side: Direction): Option[InventorySource] = position.world match {
@@ -61,7 +61,7 @@ object InventoryUtils {
   }
 
   /**
-   * Retrieves an actual inventory implementation for a specified world coordinate.
+   * Retrieves an actual inventory implementation for a specified level coordinate.
    */
   def inventoryAt(position: BlockPosition, side: Direction): Option[IItemHandler] = inventorySourceAt(position, side)
     .map(a => a.inventory)
@@ -156,7 +156,7 @@ object InventoryUtils {
           case realExtracted: ItemStack if realExtracted.getCount == count => consumer(realExtracted, false)
           case realExtracted =>
             OpenComputers.log.warn("An IItemHandler instance acted differently between simulated and non-simulated extraction. Offender: " + inventory)
-            // Attempt inserting the stack anyway, to minimize world-side item loss.
+            // Attempt inserting the stack anyway, to minimize level-side item loss.
             if (realExtracted != null && !realExtracted.isEmpty) {
               consumer(realExtracted, false)
             }
@@ -261,7 +261,7 @@ object InventoryUtils {
 
     /**
    * Utility method for calling <tt>insertIntoInventory</tt> on an inventory
-   * in the world.
+   * in the level.
    */
   def insertIntoInventoryAt(stack: ItemStack, position: BlockPosition, side: Option[Direction] = None, limit: Int = 64, simulate: Boolean = false): Boolean =
     inventoryAt(position, side.orNull).exists(insertIntoInventory(stack, _, limit, simulate))
@@ -270,7 +270,7 @@ object InventoryUtils {
 
   /**
    * Utility method for calling <tt>extractFromInventory</tt> on an inventory
-   * in the world.
+   * in the level.
    */
   def getExtractorFromInventoryAt(consumer: (ItemStack, Boolean) => Unit, position: BlockPosition, side: Direction, limit: Int = 64): Extractor =
     inventoryAt(position, side) match {
@@ -316,7 +316,7 @@ object InventoryUtils {
 
   /**
    * Utility method for calling <tt>transferBetweenInventories</tt> on inventories
-   * in the world.
+   * in the level.
    */
   def getTransferBetweenInventoriesAt(source: BlockPosition, sourceSide: Direction, sink: BlockPosition, sinkSide: Option[Direction], limit: Int = 64): Extractor =
     inventoryAt(source, sourceSide) match {
@@ -330,7 +330,7 @@ object InventoryUtils {
 
   /**
    * Utility method for calling <tt>transferBetweenInventoriesSlots</tt> on inventories
-   * in the world.
+   * in the level.
    */
   def getTransferBetweenInventoriesSlotsAt(sourcePos: BlockPosition, sourceSide: Direction, sourceSlot: Int, sinkPos: BlockPosition, sinkSide: Option[Direction], sinkSlot: Option[Int], limit: Int = 64): Extractor =
     inventoryAt(sourcePos, sourceSide) match {
@@ -357,7 +357,7 @@ object InventoryUtils {
 
   /**
    * Utility method for dropping contents from a single inventory slot into
-   * the world.
+   * the level.
    */
   def dropSlot(position: BlockPosition, inventory: IInventory, slot: Int, count: Int, direction: Option[Direction] = None): Boolean = {
     StackOption(inventory.removeItem(slot, count)) match {
@@ -367,7 +367,7 @@ object InventoryUtils {
   }
 
   /**
-   * Utility method for dumping all inventory contents into the world.
+   * Utility method for dumping all inventory contents into the level.
    */
   def dropAllSlots(position: BlockPosition, inventory: IInventory): Unit = {
     for (slot <- 0 until inventory.getContainerSize) {
@@ -381,7 +381,7 @@ object InventoryUtils {
   }
 
   /**
-   * Try inserting an item stack into a player inventory. If that fails, drop it into the world.
+   * Try inserting an item stack into a player inventory. If that fails, drop it into the level.
    */
   def addToPlayerInventory(stack: ItemStack, player: PlayerEntity, spawnInWorld: Boolean = true): Unit = {
     if (!stack.isEmpty) {
@@ -398,7 +398,7 @@ object InventoryUtils {
   }
 
   /**
-   * Utility method for spawning an item stack in the world.
+   * Utility method for spawning an item stack in the level.
    */
   def spawnStackInWorld(position: BlockPosition, stack: ItemStack, direction: Option[Direction] = None, validator: Option[ItemEntity => Boolean] = None): ItemEntity = position.world match {
     case Some(world) if !stack.isEmpty && stack.getCount > 0 =>

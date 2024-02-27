@@ -35,7 +35,7 @@ public final class TileEntityTypes {
     public static final TileEntityType<Raid> RAID = null;
     public static final TileEntityType<Redstone> REDSTONE_IO = null;
     public static final TileEntityType<Relay> RELAY = null;
-    // We use the RobotProxy instead of Robot here because those are the ones actually found in the world.
+    // We use the RobotProxy instead of Robot here because those are the ones actually found in the level.
     // Beware of TileEntityType.create for this as it will construct a new, empty robot.
     public static final TileEntityType<RobotProxy> ROBOT = null;
     public static final TileEntityType<Screen> SCREEN = null;

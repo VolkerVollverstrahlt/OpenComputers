@@ -1,8 +1,7 @@
 package li.cil.oc.common.item.traits
 
 import java.util
-
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.api.event.RobotRenderEvent.MountPoint
@@ -14,11 +13,11 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.Tooltip
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.util.ITooltipFlag
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.item.BlockItemUseContext
-import net.minecraft.item.Item
-import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.ItemUseContext
 import net.minecraft.util.ActionResult
 import net.minecraft.util.ActionResultType
@@ -43,7 +42,7 @@ trait SimpleItem extends Item with api.driver.item.UpgradeRenderer {
   @Deprecated
   override def getDescriptionId = "item.oc." + unlocalizedName
 
-  override def doesSneakBypassUse(stack: ItemStack, world: IWorldReader, pos: BlockPos, player: PlayerEntity): Boolean = {
+  override def doesSneakBypassUse(stack: ItemStack, world: IWorldReader, pos: BlockPos, player: Player): Boolean = {
     world.getBlockEntity(pos) match {
       case drive: tileentity.DiskDrive => true
       case _ => super.doesSneakBypassUse(stack, world, pos, player)
@@ -59,7 +58,7 @@ trait SimpleItem extends Item with api.driver.item.UpgradeRenderer {
   }
 
   @Deprecated
-  def onItemUseFirst(stack: ItemStack, player: PlayerEntity, world: World, pos: BlockPos, side: Direction, hitX: Float, hitY: Float, hitZ: Float, hand: Hand): ActionResultType = ActionResultType.PASS
+  def onItemUseFirst(stack: ItemStack, player: Player, world: World, pos: BlockPos, side: Direction, hitX: Float, hitY: Float, hitZ: Float, hand: Hand): ActionResultType = ActionResultType.PASS
 
   @Deprecated
   override def useOn(ctx: ItemUseContext): ActionResultType =
@@ -76,17 +75,17 @@ trait SimpleItem extends Item with api.driver.item.UpgradeRenderer {
     }
 
   @Deprecated
-  def onItemUse(stack: ItemStack, player: PlayerEntity, position: BlockPosition, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = false
+  def onItemUse(stack: ItemStack, player: Player, position: BlockPosition, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = false
 
   @Deprecated
-  override def use(world: World, player: PlayerEntity, hand: Hand): ActionResult[ItemStack] =
+  override def use(world: World, player: Player, hand: Hand): ActionResult[ItemStack] =
     player.getItemInHand(hand) match {
       case stack: ItemStack => use(stack, world, player)
       case _ => super.use(world, player, hand)
     }
 
   @Deprecated
-  def use(stack: ItemStack, world: World, player: PlayerEntity): ActionResult[ItemStack] = new ActionResult(ActionResultType.PASS, stack)
+  def use(stack: ItemStack, world: World, player: Player): ActionResult[ItemStack] = new ActionResult(ActionResultType.PASS, stack)
 
   protected def tierFromDriver(stack: ItemStack): Int =
     api.Driver.driverFor(stack) match {
@@ -130,5 +129,5 @@ trait SimpleItem extends Item with api.driver.item.UpgradeRenderer {
 
   override def computePreferredMountPoint(stack: ItemStack, robot: Robot, availableMountPoints: util.Set[String]): String = UpgradeRenderer.preferredMountPoint(stack, availableMountPoints)
 
-  override def render(matrix: MatrixStack, buffer: IRenderTypeBuffer, stack: ItemStack, mountPoint: MountPoint, robot: Robot, pt: Float): Unit = UpgradeRenderer.render(matrix, buffer, stack, mountPoint)
+  override def render(matrix: PoseStack, buffer: IRenderTypeBuffer, stack: ItemStack, mountPoint: MountPoint, robot: Robot, pt: Float): Unit = UpgradeRenderer.render(matrix, buffer, stack, mountPoint)
 }

@@ -127,26 +127,26 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
     result(node.changeBuffer(args.checkDouble(0)))
   }
 
-  @Callback(doc = """function():number -- Get the container's X position in the world.""")
+  @Callback(doc = """function():number -- Get the container's X position in the level.""")
   def getX(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     result(host.xPosition)
   }
 
-  @Callback(doc = """function():number -- Get the container's Y position in the world.""")
+  @Callback(doc = """function():number -- Get the container's Y position in the level.""")
   def getY(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     result(host.yPosition)
   }
 
-  @Callback(doc = """function():number -- Get the container's Z position in the world.""")
+  @Callback(doc = """function():number -- Get the container's Z position in the level.""")
   def getZ(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     result(host.zPosition)
   }
 
   @Deprecated
-  @Callback(doc = """function([id:number]):userdata -- Get the world object for the specified dimension ID, or the container's.""")
+  @Callback(doc = """function([id:number]):userdata -- Get the level object for the specified dimension ID, or the container's.""")
   def getWorld(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     if (args.count() > 0) {
@@ -163,7 +163,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
   }
 
   @Deprecated
-  @Callback(doc = """function():table -- Get a list of all world IDs, loaded and unloaded.""")
+  @Callback(doc = """function():table -- Get a list of all level IDs, loaded and unloaded.""")
   def getWorlds(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     result(Array[Int](0, -1, 1))
@@ -181,7 +181,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
     result(ServerLifecycleHooks.getCurrentServer.getPlayerNames)
   }
 
-  @Callback(doc = """function():userdata -- Get the scoreboard object for the world""")
+  @Callback(doc = """function():userdata -- Get the scoreboard object for the level""")
   def getScoreboard(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     result(new DebugCard.ScoreboardValue(Option(host.world)))
@@ -189,7 +189,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
 
 
   @Deprecated
-  @Callback(doc = "function(x: number, y: number, z: number[, worldId: number]):boolean, string, table -- returns contents at the location in world by id (default host world)")
+  @Callback(doc = "function(x: number, y: number, z: number[, worldId: number]):boolean, string, table -- returns contents at the location in level by id (default host level)")
   def scanContentsAt(context: Context, args: Arguments): Array[AnyRef] = {
     checkAccess()
     val x = args.checkInteger(0)
@@ -428,7 +428,7 @@ object DebugCard {
       }
     }
 
-    @Callback(doc = """function():userdata -- Get the player's world object.""")
+    @Callback(doc = """function():userdata -- Get the player's level object.""")
     def getWorld(context: Context, args: Arguments): Array[AnyRef] = {
       withPlayer(player => result(new DebugCard.WorldValue(player.level)))
     }
@@ -698,7 +698,7 @@ object DebugCard {
       result(world.dimension.location.toString)
     }
 
-    @Callback(doc = """function():number -- Gets the seed of the world.""")
+    @Callback(doc = """function():number -- Gets the seed of the level.""")
     def getSeed(context: Context, args: Arguments): Array[AnyRef] = {
       checkAccess()
       result(world.asInstanceOf[ServerWorld].getSeed)
@@ -730,13 +730,13 @@ object DebugCard {
       null
     }
 
-    @Callback(doc = """function():number -- Get the current world time.""")
+    @Callback(doc = """function():number -- Get the current level time.""")
     def getTime(context: Context, args: Arguments): Array[AnyRef] = {
       checkAccess()
       result(world.getDayTime)
     }
 
-    @Callback(doc = """function(value:number) -- Set the current world time.""")
+    @Callback(doc = """function(value:number) -- Set the current level time.""")
     def setTime(context: Context, args: Arguments): Array[AnyRef] = {
       checkAccess()
       world.asInstanceOf[ServerWorld].setDayTime(args.checkDouble(0).toLong)

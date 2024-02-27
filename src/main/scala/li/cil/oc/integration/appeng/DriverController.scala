@@ -19,7 +19,7 @@ import scala.language.existentials
 object DriverController extends DriverSidedTileEntity {
   private type TileController = TileEntity with IActionHost with IGridHost
 
-  def getTileEntityClass = AEUtil.controllerClass
+  def getBlockEntityClass = AEUtil.controllerClass
 
   def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[TileController])

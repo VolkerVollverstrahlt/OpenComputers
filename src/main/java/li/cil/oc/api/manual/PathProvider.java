@@ -1,15 +1,15 @@
 package li.cil.oc.api.manual;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
- * Allows providing paths for item stacks and blocks in the world.
+ * Allows providing paths for item stacks and blocks in the level.
  * <br>
  * This is used for generating NEI usage pages with a button opening the manual
  * on the page at the specified path, or for opening the manual when held in
- * hand and sneak-activating a block in the world.
+ * hand and sneak-activating a block in the level.
  * <br>
  * This way you can easily make entries in your documentation available the
  * same way OpenComputers does it itself.
@@ -36,9 +36,9 @@ public interface PathProvider {
      * Return <tt>null</tt> if there is no known page for this item, allowing
      * other providers to be queried.
      *
-     * @param world the world containing the block.
+     * @param level the level containing the block.
      * @param pos   the position coordinate of the block.
      * @return the path to the page, <tt>null</tt> if none is known.
      */
-    String pathFor(World world, BlockPos pos);
+    String pathFor(Level level, BlockPos pos);
 }

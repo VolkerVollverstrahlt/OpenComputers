@@ -57,7 +57,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
   var activeBehaviorsDirty = true
   var hasSentConfiguration = false
 
-  override def world: World = player.level
+  override def level: World = player.level
 
   override def x: Int = BlockPosition(player).x
 
@@ -243,7 +243,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
       }
 
       // Handle dimension changes, the robust way (because when logging in,
-      // load is called while the world is still set to the overworld, but
+      // load is called while the level is still set to the overworld, but
       // no dimension change event is fired if the player actually logged
       // out in another dimension... yay)
       if (player.level.dimension != previousDimension) {
@@ -358,7 +358,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
 
   // ----------------------------------------------------------------------- //
 
-  private def isClient = world.isClientSide
+  private def isClient = level.isClientSide
 
   private def isServer = !isClient
 

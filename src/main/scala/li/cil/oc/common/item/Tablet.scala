@@ -261,9 +261,9 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
 }
 
 class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends ComponentInventory with MachineHost with internal.Tablet with INamedContainerProvider {
-  // Remember our *original* world, so we know which tablets to clear on dimension
+  // Remember our *original* level, so we know which tablets to clear on dimension
   // changes of players holding tablets - since the player entity instance may be
-  // kept the same and components are not required to properly handle world changes.
+  // kept the same and components are not required to properly handle level changes.
   val world: World = player.level
 
   lazy val machine: api.machine.Machine = if (world.isClientSide) null else Machine.create(this)
@@ -593,8 +593,8 @@ object Tablet {
 
         var wrapper = cache.get(id, this)
 
-        // Force re-load on world change, in case some components store a
-        // reference to the world object.
+        // Force re-load on level change, in case some components store a
+        // reference to the level object.
         if (holder.level != wrapper.world) {
           wrapper.writeToNBT(clearState = false)
           wrapper.autoSave = false

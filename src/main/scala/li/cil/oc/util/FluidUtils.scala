@@ -19,9 +19,9 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem
 
 object FluidUtils {
   /**
-   * Retrieves an actual fluid handler implementation for a specified world coordinate.
+   * Retrieves an actual fluid handler implementation for a specified level coordinate.
    * <br>
-   * This performs special handling for in-world liquids.
+   * This performs special handling for in-level liquids.
    */
   def fluidHandlerAt(position: BlockPosition, side: Direction): Option[IFluidHandler] = position.world match {
     case Some(world) if world.blockExists(position) => world.getBlockEntity(position) match {
@@ -79,7 +79,7 @@ object FluidUtils {
 
   /**
    * Utility method for calling <tt>transferBetweenFluidHandlers</tt> on handlers
-   * in the world.
+   * in the level.
    * <br>
    * This uses the <tt>fluidHandlerAt</tt> method, and therefore handles special
    * cases such as fluid blocks.

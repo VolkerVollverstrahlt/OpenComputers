@@ -35,7 +35,7 @@ object ChunkloaderUpgradeHandler extends LoadingValidationCallback {
 
   override def validateTickets(world: ServerWorld, helper: TicketHelper) {
     for ((owner, ticketsPair) <- helper.getEntityTickets) {
-      // This ensures that malformed tickets are also cleared on world save.
+      // This ensures that malformed tickets are also cleared on level save.
       restoredTickets += owner -> null
       // Chunkloaders use only ticking tickets.
       val tickets = ticketsPair.getSecond
@@ -70,10 +70,10 @@ object ChunkloaderUpgradeHandler extends LoadingValidationCallback {
   @SubscribeEvent
   def onWorldSave(e: WorldEvent.Save) = e.getWorld match {
     case world: ServerWorld => {
-      // Any tickets that were not reassigned by the time the world gets saved
+      // Any tickets that were not reassigned by the time the level gets saved
       // again can be considered orphaned, so we release them.
       // TODO figure out a better event *after* tile entities were restored
-      // but *before* the world is saved, because the tickets are saved first,
+      // but *before* the level is saved, because the tickets are saved first,
       // so if the save is because the game is being quit the tickets aren't
       // actually being cleared. This will *usually* not be a problem, but it
       // has room for improvement.

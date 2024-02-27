@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriverBrewingStand extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[BrewingStandTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[BrewingStandTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[BrewingStandTileEntity])
@@ -29,7 +29,7 @@ object DriverBrewingStand extends DriverSidedTileEntity {
 
     @Callback(doc = "function():number -- Get the number of ticks remaining of the current brewing operation.")
     def getBrewTime(context: Context, args: Arguments): Array[AnyRef] = {
-      result(tileEntity.brewTime)
+      result(blockEntity.brewTime)
     }
   }
 

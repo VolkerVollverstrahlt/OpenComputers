@@ -17,7 +17,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public final class DriverSecureTile extends DriverSidedTileEntity {
     @Override
-    public Class<?> getTileEntityClass() {
+    public Class<?> getBlockEntityClass() {
         return ISecurable.class;
     }
 
@@ -37,17 +37,17 @@ public final class DriverSecureTile extends DriverSidedTileEntity {
         public Object[] canPlayerAccess(final Context context, final Arguments args) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             ServerPlayerEntity player = server.getPlayerList().getPlayerByName(args.checkString(0));
-            return new Object[]{player != null && tileEntity.canAccess(player)};
+            return new Object[]{player != null && blockEntity.canAccess(player)};
         }
 
         @Callback(doc = "function():string --  Returns the type of the access.")
         public Object[] getAccess(final Context context, final Arguments args) {
-            return new Object[]{WordUtils.capitalize(tileEntity.getAccess().name())};
+            return new Object[]{WordUtils.capitalize(blockEntity.getAccess().name())};
         }
 
         @Callback(doc = "function():string --  Returns the name of the owner.")
         public Object[] getOwnerName(final Context context, final Arguments args) {
-            return new Object[]{tileEntity.getOwnerName()};
+            return new Object[]{blockEntity.getOwnerName()};
         }
     }
 }

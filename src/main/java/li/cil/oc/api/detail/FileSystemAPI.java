@@ -4,7 +4,7 @@ import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.fs.FileSystem;
 import li.cil.oc.api.fs.Label;
 import li.cil.oc.api.network.ManagedEnvironment;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public interface FileSystemAPI {
     /**
@@ -39,7 +39,7 @@ public interface FileSystemAPI {
      * file system.
      * <br>
      * Note that by default file systems are "buffered", meaning that any
-     * changes made to them are only saved to disk when the world is saved. This
+     * changes made to them are only saved to disk when the level is saved. This
      * ensured that the file system contents do not go "out of sync" when the
      * game crashes, but introduces additional memory overhead, since all files
      * in the file system have to be kept in memory.
@@ -84,7 +84,7 @@ public interface FileSystemAPI {
      * node, though.
      * <br>
      * The container parameter is used to give the file system some physical
-     * relation to the world, for example this is used by hard drives to send
+     * relation to the level, for example this is used by hard drives to send
      * the disk event notifications to the client that are used to play disk
      * access sounds.
      * <br>

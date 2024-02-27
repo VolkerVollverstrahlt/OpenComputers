@@ -71,10 +71,10 @@ object PacketHandler {
 
 abstract class PacketHandler {
   /**
-    * Gets the world for the specified dimension.
+    * Gets the level for the specified dimension.
     *
-    * For clients this returns the client's world if it is the specified
-    * dimension; None otherwise. For the server it returns the world for the
+    * For clients this returns the client's level if it is the specified
+    * dimension; None otherwise. For the server it returns the level for the
     * specified dimension, if such a dimension exists; None otherwise.
     */
   protected def world(player: PlayerEntity, dimension: ResourceLocation): Option[World]

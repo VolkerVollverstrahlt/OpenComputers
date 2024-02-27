@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriverMobSpawner extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[MobSpawnerTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[MobSpawnerTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[MobSpawnerTileEntity])
@@ -30,7 +30,7 @@ object DriverMobSpawner extends DriverSidedTileEntity {
 
     @Callback(doc = "function():string -- Get the name of the entity that is being spawned by this spawner.")
     def getSpawningMobName(context: Context, args: Arguments): Array[AnyRef] = {
-      result(tileEntity.getSpawner.getEntityId)
+      result(blockEntity.getSpawner.getEntityId)
     }
   }
 

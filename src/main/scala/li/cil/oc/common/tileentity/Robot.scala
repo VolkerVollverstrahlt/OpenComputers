@@ -65,7 +65,7 @@ import net.minecraftforge.api.distmarker.OnlyIn
 
 import scala.collection.mutable
 
-// Implementation note: this tile entity is never directly added to the world.
+// Implementation note: this tile entity is never directly added to the level.
 // It is always wrapped by a `RobotProxy` tile entity, which forwards any
 // necessary calls to this class. This is done to make moves efficient: when a
 // robot moves we only create a new proxy tile entity, hook the instance of this

@@ -37,7 +37,7 @@ class Trade(val info: TradeInfo) extends AbstractValue {
     case _ => false
   }
 
-  // Queue the load because when load is called we can't access the world yet
+  // Queue the load because when load is called we can't access the level yet
   // and we need to access it to get the Robot's TileEntity / Drone's Entity.
   override def loadData(nbt: CompoundNBT) = EventHandler.scheduleServer(() => info.loadData(nbt))
 

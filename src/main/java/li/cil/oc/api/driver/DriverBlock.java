@@ -1,16 +1,16 @@
 package li.cil.oc.api.driver;
 
 import li.cil.oc.api.network.ManagedEnvironment;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 
 /**
  * Interface for side-aware block component drivers.
  * <br>
  * This driver type is used for components that are blocks, i.e. that can be
- * placed in the world, but cannot be modified to or don't want to have their
- * {@link net.minecraft.tileentity.TileEntity} implement one of the interfaces
+ * placed in the level, but cannot be modified to or don't want to have their
+ * {@link net.minecraft.world.level.block.entity.BlockEntity} implement one of the interfaces
  * for environments ({@link li.cil.oc.api.network.Environment} or
  * {@link li.cil.oc.api.network.SidedEnvironment}).
  * <br>
@@ -39,12 +39,12 @@ public interface DriverBlock {
      * The side is relative to the block, i.e. "south" is the side of the block
      * facing south.
      *
-     * @param world the world in which the block to check lives.
+     * @param level the level in which the block to check lives.
      * @param pos   the position coordinate of the block to check.
      * @param side  the side of the block to check.
      * @return <tt>true</tt> if the block is supported; <tt>false</tt> otherwise.
      */
-    boolean worksWith(World world, BlockPos pos, Direction side);
+    boolean worksWith(Level level, BlockPos pos, Direction side);
 
     /**
      * Create a new managed environment interfacing the specified block.
@@ -62,10 +62,10 @@ public interface DriverBlock {
      * The side is relative to the block, i.e. "south" is the side of the block
      * facing south.
      *
-     * @param world the world containing the block to get the environment for.
+     * @param level the level containing the block to get the environment for.
      * @param pos   the position coordinate of the block to check.
      * @param side  the side of the block to check.
      * @return the environment for the block at that location.
      */
-    ManagedEnvironment createEnvironment(World world, BlockPos pos, Direction side);
+    ManagedEnvironment createEnvironment(Level level, BlockPos pos, Direction side);
 }

@@ -1,7 +1,6 @@
 package li.cil.oc.common.block
 
 import java.util
-
 import li.cil.oc.CreativeTab
 import li.cil.oc.common.tileentity
 import li.cil.oc.common.tileentity.traits.Colored
@@ -17,25 +16,24 @@ import net.minecraft.block.BlockRenderType
 import net.minecraft.block.ContainerBlock
 import net.minecraft.block.material.Material
 import net.minecraft.client.util.ITooltipFlag
+import net.minecraft.core.{BlockPos, Direction}
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.DyeColor
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.DyeColor
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.ItemStack
 import net.minecraft.loot.LootContext
 import net.minecraft.loot.LootParameters
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ActionResultType
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.BlockRayTraceResult
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.IBlockReader
-import net.minecraft.world.IWorldReader
-import net.minecraft.world.World
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.{IBlockReader, IWorldReader, InteractionHand}
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.ToolType
@@ -93,14 +91,14 @@ abstract class SimpleBlock(props: Properties) extends ContainerBlock(props) {
       case _ => Direction.SOUTH
     }
 
-  def setFacing(world: World, pos: BlockPos, value: Direction): Boolean =
-    world.getBlockEntity(pos) match {
+  def setFacing(level: Level, pos: BlockPos, value: Direction): Boolean =
+    level.getBlockEntity(pos) match {
       case rotatable: Rotatable => rotatable.setFromFacing(value); true
       case _ => false
     }
 
-  def setRotationFromEntityPitchAndYaw(world: World, pos: BlockPos, value: Entity): Boolean =
-    world.getBlockEntity(pos) match {
+  def setRotationFromEntityPitchAndYaw(level: Level, pos: BlockPos, value: Entity): Boolean =
+    level.getBlockEntity(pos) match {
       case rotatable: Rotatable => rotatable.setFromEntityPitchAndYaw(value); true
       case _ => false
     }
@@ -121,7 +119,7 @@ abstract class SimpleBlock(props: Properties) extends ContainerBlock(props) {
 
   override def canBeReplacedByLeaves(state: BlockState, world: IWorldReader, pos: BlockPos): Boolean = false
 
-  def getValidRotations(world: World, pos: BlockPos): Array[Direction] = validRotations_
+  def getValidRotations(level: Level, pos: BlockPos): Array[Direction] = validRotations_
 
   override def getDrops(state: BlockState, ctx: LootContext.Builder): util.List[ItemStack] = {
     val newCtx = ctx.getOptionalParameter(LootParameters.BLOCK_ENTITY) match {
@@ -157,7 +155,7 @@ abstract class SimpleBlock(props: Properties) extends ContainerBlock(props) {
 
   // ----------------------------------------------------------------------- //
 
-  override def use(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, trace: BlockRayTraceResult): ActionResultType = {
+  override def use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, trace: BlockRayTraceResult): ActionResultType = {
     val heldItem = player.getItemInHand(hand)
     world.getBlockEntity(pos) match {
       case colored: Colored if Color.isDye(heldItem) =>

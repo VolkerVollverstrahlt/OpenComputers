@@ -1,7 +1,6 @@
 package li.cil.oc.common
 
 import java.util.function.Supplier
-
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
@@ -11,19 +10,17 @@ import java.util.zip.DeflaterOutputStream
 import io.netty.buffer.Unpooled
 import li.cil.oc.{OpenComputers, Settings}
 import li.cil.oc.api.network.EnvironmentHost
-import net.minecraft.entity.Entity
-import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompressedStreamTools
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.Direction
-import net.minecraft.util.math.ChunkPos
-import net.minecraft.world.World
-import net.minecraft.world.server.ServerWorld
-import net.minecraftforge.fml.network.PacketDistributor
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraft.core.Direction
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.NbtIo
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.level.{ChunkPos, Level}
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.server.level.{ServerLevel, ServerPlayer}
+import net.minecraftforge.network.PacketDistributor
 import net.minecraftforge.registries._
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.convert.ImplicitConversionsToScala._
 
@@ -31,7 +28,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
   def writeRegistryEntry[T <: IForgeRegistryEntry[T]](registry: IForgeRegistry[T], value: T): Unit =
     writeInt(registry.asInstanceOf[ForgeRegistry[T]].getID(value))
 
-  def writeTileEntity(t: TileEntity) {
+  def writeTileEntity(t: BlockEntity) {
     writeUTF(t.getLevel.dimension.location.toString)
     writeInt(t.getBlockPos.getX)
     writeInt(t.getBlockPos.getY)
@@ -52,15 +49,15 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
     val haveStack = !stack.isEmpty && stack.getCount > 0
     writeBoolean(haveStack)
     if (haveStack) {
-      writeNBT(stack.save(new CompoundNBT()))
+      writeNBT(stack.save(new CompoundTag()))
     }
   }
 
-  def writeNBT(nbt: CompoundNBT) = {
+  def writeNBT(nbt: CompoundTag) = {
     val haveNbt = nbt != null
     writeBoolean(haveNbt)
     if (haveNbt) {
-      CompressedStreamTools.write(nbt, this)
+      NbtIo.write(nbt, this)
     }
   }
 
@@ -78,14 +75,14 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
 
   def sendToPlayersNearHost(host: EnvironmentHost, range: Option[Double] = None): Unit = {
     host match {
-      case t: TileEntity => sendToPlayersNearTileEntity(t, range)
+      case t: BlockEntity => sendToPlayersNearTileEntity(t, range)
       case _ => sendToNearbyPlayers(host.world, host.xPosition, host.yPosition, host.zPosition, range)
     }
   }
 
-  def sendToPlayersNearTileEntity(t: TileEntity, range: Option[Double] = None) {
+  def sendToPlayersNearTileEntity(t: BlockEntity, range: Option[Double] = None) {
     t.getLevel match {
-      case w: ServerWorld =>
+      case w: ServerLevel =>
         val chunk = new ChunkPos(t.getBlockPos)
 
         val manager = ServerLifecycleHooks.getCurrentServer.getPlayerList
@@ -105,7 +102,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
     }
   }
 
-  def sendToNearbyPlayers(world: World, x: Double, y: Double, z: Double, range: Option[Double]) {
+  def sendToNearbyPlayers(level: Level, x: Double, y: Double, z: Double, range: Option[Double]) {
     val server = ServerLifecycleHooks.getCurrentServer
     val manager = server.getPlayerList
 
@@ -116,14 +113,14 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
     }
     val maxPacketRangeSq = maxPacketRange * maxPacketRange
 
-    for (player <- manager.getPlayers if player.level == world) {
+    for (player <- manager.getPlayers if player.level == level) {
       if (player.distanceToSqr(x, y, z) <= maxPacketRangeSq) {
         sendToPlayer(player)
       }
     }
   }
 
-  def sendToPlayer(player: ServerPlayerEntity) = OpenComputers.channel.send(PacketDistributor.PLAYER.`with`(new Supplier[ServerPlayerEntity] {
+  def sendToPlayer(player: ServerPlayer) = OpenComputers.channel.send(PacketDistributor.PLAYER.`with`(new Supplier[ServerPlayer] {
     override def get = player
   }), packet)
 

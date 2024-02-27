@@ -5,10 +5,10 @@ import li.cil.oc.api.manual.ImageProvider;
 import li.cil.oc.api.manual.ImageRenderer;
 import li.cil.oc.api.manual.PathProvider;
 import li.cil.oc.api.manual.TabIconRenderer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public interface ManualAPI {
     /**
@@ -29,7 +29,7 @@ public interface ManualAPI {
      * Register a path provider.
      * <br>
      * Path providers are used to find documentation entries for item stacks
-     * and blocks in the world.
+     * and blocks in the level.
      *
      * @param provider the provider to register.
      */
@@ -77,13 +77,13 @@ public interface ManualAPI {
     String pathFor(ItemStack stack);
 
     /**
-     * Look up the documentation for the specified block in the world.
+     * Look up the documentation for the specified block in the level.
      *
-     * @param world the world containing the block.
+     * @param level the level containing the block.
      * @param pos   the position of the block.
      * @return the path to the page, <tt>null</tt> if none is known.
      */
-    String pathFor(World world, BlockPos pos);
+    String pathFor(Level level, BlockPos pos);
 
     /**
      * Get the content of the documentation page at the specified location.
@@ -119,7 +119,7 @@ public interface ManualAPI {
      *
      * @param player the player to open the manual for.
      */
-    void openFor(PlayerEntity player);
+    void openFor(Player player);
 
     /**
      * Reset the history of the manual.

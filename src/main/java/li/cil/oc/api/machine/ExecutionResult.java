@@ -45,7 +45,7 @@ public abstract class ExecutionResult {
      * {@link Architecture#runSynchronized()} instead of
      * {@link Architecture#runThreaded(boolean)}. This is used to perform calls
      * from the server's main thread, to avoid threading issues when interacting
-     * with other objects in the world.
+     * with other objects in the level.
      */
     public static final class SynchronizedCall extends ExecutionResult {
     }

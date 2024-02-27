@@ -116,19 +116,19 @@ public interface Machine extends ManagedEnvironment, Context {
     String lastError();
 
     /**
-     * The current world time. This is updated each tick and provides a thread
-     * safe way to access the world time for architectures.
+     * The current level time. This is updated each tick and provides a thread
+     * safe way to access the level time for architectures.
      * <br>
-     * This is equivalent to <tt>owner().world().getWorldTime()</tt>.
+     * This is equivalent to <tt>owner().level().getWorldTime()</tt>.
      *
-     * @return the current world time.
+     * @return the current level time.
      */
     long worldTime();
 
     /**
      * The time that has passed since the machine was started, in seconds.
      * <br>
-     * Note that this is actually measured in world time, so the resolution is
+     * Note that this is actually measured in level time, so the resolution is
      * pretty limited. This is done to avoid 'time skips' when leaving the game
      * and coming back later, resuming a persisted machine.
      */

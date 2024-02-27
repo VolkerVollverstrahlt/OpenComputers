@@ -1,12 +1,12 @@
 package li.cil.oc.api.network;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 /**
  * To be implemented by 'hosts' of components.
  * <br>
  * This is what's passed to drivers as the host when creating an environment.
- * It is generally used to represent the components' location in the world.
+ * It is generally used to represent the components' location in the level.
  * <br>
  * You will only need to implement this if you intend to host components, e.g.
  * by providing a custom computer case or such. In OpenComputers this interface
@@ -16,12 +16,12 @@ import net.minecraft.world.World;
  */
 public interface EnvironmentHost {
     /**
-     * The world the container lives in.
+     * The level the container lives in.
      */
-    World world();
+    Level world();
 
     /**
-     * The container's X position in the world.
+     * The container's X position in the level.
      * <br>
      * For tile entities this is the <em>centered</em> position. For example,
      * if the tile entity is located at (0, 2, 3) this will be 0.5.
@@ -29,7 +29,7 @@ public interface EnvironmentHost {
     double xPosition();
 
     /**
-     * The container's Y position in the world.
+     * The container's Y position in the level.
      * <br>
      * For tile entities this is the <em>centered</em> position. For example,
      * if the tile entity is located at (0, 2, 3) this will be 2.5.
@@ -37,7 +37,7 @@ public interface EnvironmentHost {
     double yPosition();
 
     /**
-     * The container's Z position in the world.
+     * The container's Z position in the level.
      * <br>
      * For tile entities this is the <em>centered</em> position. For example,
      * if the tile entity is located at (0, 2, 3) this will be 3.5.
@@ -46,7 +46,7 @@ public interface EnvironmentHost {
 
     /**
      * Marks the container as "changed" so that it knows it has to be saved
-     * again in the next world save.
+     * again in the next level save.
      */
     void markChanged();
 }

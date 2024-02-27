@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriverComparator extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[ComparatorTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[ComparatorTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[ComparatorTileEntity])
@@ -29,7 +29,7 @@ object DriverComparator extends DriverSidedTileEntity {
 
     @Callback(doc = "function():number -- Get the strength of the comparators output signal.")
     def getOutputSignal(context: Context, args: Arguments): Array[AnyRef] = {
-      result(tileEntity.getOutputSignal)
+      result(blockEntity.getOutputSignal)
     }
   }
 

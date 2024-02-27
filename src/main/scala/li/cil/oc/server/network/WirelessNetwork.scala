@@ -95,7 +95,7 @@ object WirelessNetwork {
     }
   }
 
-  private def dimension(endpoint: WirelessEndpoint) = endpoint.world.dimension
+  private def dimension(endpoint: WirelessEndpoint) = endpoint.level.dimension
 
   private def offset(endpoint: WirelessEndpoint, value: Double) =
     (endpoint.x + 0.5 + value, endpoint.y + 0.5 + value, endpoint.z + 0.5 + value)
@@ -119,7 +119,7 @@ object WirelessNetwork {
       // surplus strength left after crossing the distance between the two. If
       // we reach a point where the surplus strength does not suffice we block
       // the message.
-      val world = endpoint.world
+      val world = endpoint.level
 
       val origin = new Vector3d(reference.x, reference.y, reference.z)
       val target = new Vector3d(endpoint.x, endpoint.y, endpoint.z)

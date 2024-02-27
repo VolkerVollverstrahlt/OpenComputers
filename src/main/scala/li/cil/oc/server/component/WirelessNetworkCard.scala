@@ -44,7 +44,7 @@ abstract class WirelessNetworkCard(host: EnvironmentHost) extends NetworkCard(ho
 
   override def z = position.z
 
-  override def world = host.world
+  override def level = host.world
 
   def receivePacket(packet: Packet, source: WirelessEndpoint) {
     val (dx, dy, dz) = ((source.x + 0.5) - host.xPosition, (source.y + 0.5) - host.yPosition, (source.z + 0.5) - host.zPosition)
@@ -100,7 +100,7 @@ abstract class WirelessNetworkCard(host: EnvironmentHost) extends NetworkCard(ho
 
   override def update() {
     super.update()
-    if (world.getGameTime % 20 == 0) {
+    if (level.getGameTime % 20 == 0) {
       api.Network.updateWirelessNetwork(this)
     }
   }
@@ -114,7 +114,7 @@ abstract class WirelessNetworkCard(host: EnvironmentHost) extends NetworkCard(ho
 
   override def onDisconnect(node: Node) {
     super.onDisconnect(node)
-    if (node == this.node || !world.isLoaded(position)) {
+    if (node == this.node || !level.isLoaded(position)) {
       api.Network.leaveWirelessNetwork(this)
     }
   }

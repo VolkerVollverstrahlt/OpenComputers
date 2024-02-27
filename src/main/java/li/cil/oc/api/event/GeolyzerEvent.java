@@ -1,7 +1,7 @@
 package li.cil.oc.api.event;
 
 import li.cil.oc.api.network.EnvironmentHost;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
@@ -101,7 +101,7 @@ public abstract class GeolyzerEvent extends Event {
         /**
          * The position of the block to scan.
          * <br>
-         * Note: get the world via the host if you need it.
+         * Note: get the level via the host if you need it.
          */
         public final BlockPos pos;
 

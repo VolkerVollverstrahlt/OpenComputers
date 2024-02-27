@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.IFluidTank;
 
 public final class DriverFluidTank extends DriverSidedTileEntity {
     @Override
-    public Class<?> getTileEntityClass() {
+    public Class<?> getBlockEntityClass() {
         return IFluidTank.class;
     }
 
@@ -30,7 +30,7 @@ public final class DriverFluidTank extends DriverSidedTileEntity {
 
         @Callback(doc = "function():table -- Get some information about this tank.")
         public Object[] getInfo(final Context context, final Arguments args) {
-            return new Object[]{new TankProperties(tileEntity.getCapacity(), tileEntity.getFluid())};
+            return new Object[]{new TankProperties(blockEntity.getCapacity(), blockEntity.getFluid())};
         }
     }
 }

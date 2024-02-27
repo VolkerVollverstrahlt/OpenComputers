@@ -1,7 +1,6 @@
 package li.cil.oc
 
 import java.nio.file.Paths
-
 import li.cil.oc.common.IMC
 import li.cil.oc.common.Proxy
 import li.cil.oc.common.init.Blocks
@@ -23,6 +22,7 @@ import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent
 import net.minecraftforge.fml.loading.FMLPaths
 import net.minecraftforge.fml.network.simple.SimpleChannel
+import net.minecraftforge.network.simple.SimpleChannel
 import net.minecraftforge.scorge.lang.ScorgeModLoadingContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

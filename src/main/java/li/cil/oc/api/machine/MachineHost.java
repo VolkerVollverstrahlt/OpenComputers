@@ -3,12 +3,12 @@ package li.cil.oc.api.machine;
 import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Node;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * This interface has to be implemented by 'hosts' of machine instances.
  * <br>
- * It provides some context for the machine, in particular which world it is
+ * It provides some context for the machine, in particular which level it is
  * running in, to allow querying the time of day, for example.
  */
 public interface MachineHost extends EnvironmentHost {
@@ -42,7 +42,7 @@ public interface MachineHost extends EnvironmentHost {
      * when the owner does not have its own node (for example, computer cases
      * expose their machine's node as their own node). This callback allows it
      * to connect its components (graphics cards and the like) when it is
-     * connected to a node network (when added to the world, for example).
+     * connected to a node network (when added to the level, for example).
      *
      * @param node the node that was connected to the network.
      */

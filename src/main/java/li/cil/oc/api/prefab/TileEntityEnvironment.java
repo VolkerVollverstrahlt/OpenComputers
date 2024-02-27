@@ -5,10 +5,12 @@ import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * TileEntities can implement the {@link li.cil.oc.api.network.Environment}
@@ -19,7 +21,7 @@ import net.minecraft.tileentity.TileEntityType;
  * network as an index structure to find other nodes connected to them.
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class TileEntityEnvironment extends TileEntity implements Environment {
+public abstract class TileEntityEnvironment extends BlockEntity implements Environment {
     private static final String TAG_NODE = "oc:node";
 
     /**
@@ -61,8 +63,8 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
 
     // ----------------------------------------------------------------------- //
     
-    public TileEntityEnvironment(TileEntityType<?> type) {
-        super(type);
+    public TileEntityEnvironment(BlockEntityType<?> type, BlockPos position, BlockState state) {
+        super(type, position, state);
     }
 
     @Override
@@ -83,7 +85,7 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
     @Override
     public void onDisconnect(final Node node) {
         // This is called when this node is removed from its network when the
-        // tile entity is removed from the world (see onChunkUnloaded() and
+        // tile entity is removed from the level (see onChunkUnloaded() and
         // setRemoved()), in which case `node == this`.
         // This is also called for each other node that gets removed from the
         // network our node is in, in which case `node` is the removed node.
@@ -124,8 +126,8 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void load(final BlockState state, final CompoundNBT nbt) {
-        super.load(state, nbt);
+    public void load(final @NotNull CompoundTag tag) {
+        super.load(tag);
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal
@@ -135,19 +137,18 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
             // to continue working without interruption across loads. If the
             // node is a power connector this is also required to restore the
             // internal energy buffer of the node.
-            node.loadData(nbt.getCompound(TAG_NODE));
+            node.loadData(tag.getCompound(TAG_NODE));
         }
     }
 
     @Override
-    public CompoundNBT save(final CompoundNBT nbt) {
-        super.save(nbt);
+    public void saveAdditional(final @NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
         // See load() regarding host check.
         if (node != null && node.host() == this) {
-            final CompoundNBT nodeNbt = new CompoundNBT();
+            final CompoundTag nodeNbt = new CompoundTag();
             node.saveData(nodeNbt);
-            nbt.put(TAG_NODE, nodeNbt);
+            tag.put(TAG_NODE, nodeNbt);
         }
-        return nbt;
     }
 }

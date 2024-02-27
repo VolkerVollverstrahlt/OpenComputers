@@ -1,6 +1,6 @@
 package li.cil.oc.api.network;
 
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 /**
  * Interface for wireless endpoints that can be registered with the internal
@@ -15,24 +15,24 @@ import net.minecraft.world.World;
  */
 public interface WirelessEndpoint {
     /**
-     * The X coordinate of the endpoint in the world, in block coordinates.
+     * The X coordinate of the endpoint in the level, in block coordinates.
      */
     int x();
 
     /**
-     * The Y coordinate of the endpoint in the world, in block coordinates.
+     * The Y coordinate of the endpoint in the level, in block coordinates.
      */
     int y();
 
     /**
-     * The Z coordinate of the endpoint in the world, in block coordinates.
+     * The Z coordinate of the endpoint in the level, in block coordinates.
      */
     int z();
 
     /**
-     * The world this endpoint lives in.
+     * The level this endpoint lives in.
      */
-    World world();
+    Level level();
 
     /**
      * Makes the endpoint receive a single packet.

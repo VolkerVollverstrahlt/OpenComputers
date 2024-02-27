@@ -21,7 +21,7 @@ import net.minecraft.util.text.LanguageMap
 import net.minecraft.world.World
 
 object DriverRecordPlayer extends DriverSidedTileEntity {
-  override def getTileEntityClass: Class[_] = classOf[JukeboxTileEntity]
+  override def getBlockEntityClass: Class[_] = classOf[JukeboxTileEntity]
 
   override def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[JukeboxTileEntity])
@@ -33,7 +33,7 @@ object DriverRecordPlayer extends DriverSidedTileEntity {
 
     @Callback(doc = "function():string -- Get the title of the record currently in the jukebox.")
     def getRecord(context: Context, args: Arguments): Array[AnyRef] = {
-      val record = tileEntity.getRecord
+      val record = blockEntity.getRecord
       if (!record.isEmpty && record.getItem.isInstanceOf[MusicDiscItem]) {
         result(LanguageMap.getInstance.getOrDefault(record.getItem.asInstanceOf[MusicDiscItem].getDescriptionId))
       }
@@ -42,9 +42,9 @@ object DriverRecordPlayer extends DriverSidedTileEntity {
 
     @Callback(doc = "function() -- Start playing the record currently in the jukebox.")
     def play(context: Context, args: Arguments): Array[AnyRef] = {
-      val record = tileEntity.getRecord
+      val record = blockEntity.getRecord
       if (!record.isEmpty && record.getItem.isInstanceOf[MusicDiscItem]) {
-        tileEntity.getLevel.levelEvent(null, 1010, tileEntity.getBlockPos, Item.getId(record.getItem))
+        blockEntity.getLevel.levelEvent(null, 1010, blockEntity.getBlockPos, Item.getId(record.getItem))
         result(true)
       }
       else null
@@ -52,7 +52,7 @@ object DriverRecordPlayer extends DriverSidedTileEntity {
 
     @Callback(doc = "function() -- Stop playing the record currently in the jukebox.")
     def stop(context: Context, args: Arguments): Array[AnyRef] = {
-      tileEntity.getLevel.levelEvent(1010, tileEntity.getBlockPos, 0)
+      blockEntity.getLevel.levelEvent(1010, blockEntity.getBlockPos, 0)
       null
     }
   }

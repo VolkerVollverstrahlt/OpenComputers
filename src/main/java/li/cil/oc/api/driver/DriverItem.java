@@ -1,8 +1,8 @@
 package li.cil.oc.api.driver;
 
 import li.cil.oc.api.network.ManagedEnvironment;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * Interface for item component drivers.
@@ -103,12 +103,12 @@ public interface DriverItem {
      * <tt>null</tt>.
      * <br>
      * This tag will be passed to the environment's <tt>save</tt> and
-     * <tt>load</tt> methods when appropriate (world save / load and when
+     * <tt>load</tt> methods when appropriate (level save / load and when
      * removed from their hosting inventory).
      *
      * @param stack the item to get the child tag from.
      * @return the tag to use for saving and loading, or <tt>null</tt> to use
      * the default tag <tt>oc:data</tt>.
      */
-    CompoundNBT dataTag(ItemStack stack);
+    CompoundTag dataTag(ItemStack stack);
 }

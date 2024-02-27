@@ -87,7 +87,7 @@ class Case(selfType: TileEntityType[_ <: Case], var tier: Int) extends TileEntit
     getBlockState.getBlock match {
       case block: common.block.Case => {
         val state = getLevel.getBlockState(getBlockPos)
-        // race condition that the world no longer has this block at the position (e.g. it was broken)
+        // race condition that the level no longer has this block at the position (e.g. it was broken)
         if (block == state.getBlock) {
           getLevel.setBlockAndUpdate(getBlockPos, state.setValue(PropertyRunning.Running, Boolean.box(isRunning)))
         }

@@ -6,11 +6,11 @@ import li.cil.oc.api.driver.InventoryProvider;
 import li.cil.oc.api.driver.DriverItem;
 import li.cil.oc.api.driver.DriverBlock;
 import li.cil.oc.api.network.EnvironmentHost;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.Collection;
@@ -88,7 +88,7 @@ public final class Driver {
      * <br>
      * Environment providers are used for mapping item stacks to the type of
      * environment that will be created by the stack, either by it being
-     * placed in the world and acting as a block component, or by being
+     * placed in the level and acting as a block component, or by being
      * placed in an component inventory and created by the item's driver.
      *
      * @param provider the provider to register.
@@ -113,20 +113,20 @@ public final class Driver {
 
     /**
      * Looks up a driver for the block at the specified position in the
-     * specified world.
+     * specified level.
      * <br>
      * Note that several drivers for a single block can exist. Because of this
      * block drivers are always encapsulated in a 'compound' driver, which is
      * what will be returned here. In other words, you will <em>not</em>
      * get actual instances of drivers registered via {@link #add(DriverBlock)}.
      *
-     * @param world the world containing the block.
+     * @param level the level containing the block.
      * @param pos   the position of the block.
      * @return a driver for the block, or <tt>null</tt> if there is none.
      */
-    public static DriverBlock driverFor(World world, BlockPos pos, Direction side) {
+    public static DriverBlock driverFor(Level level, BlockPos pos, Direction side) {
         if (API.driver != null)
-            return API.driver.driverFor(world, pos, side);
+            return API.driver.driverFor(level, pos, side);
         return null;
     }
 
@@ -214,7 +214,7 @@ public final class Driver {
      * @param player the player holding the item. May be <tt>null</tt>.
      * @return the IItemHandler implementation interfacing the stack, or <tt>null</tt>.
      */
-    public static IItemHandler itemHandlerFor(ItemStack stack, PlayerEntity player) {
+    public static IItemHandler itemHandlerFor(ItemStack stack, Player player) {
         if (API.driver != null)
             return API.driver.itemHandlerFor(stack, player);
         return null;

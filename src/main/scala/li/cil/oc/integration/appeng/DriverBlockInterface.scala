@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
 object DriverBlockInterface extends DriverSidedTileEntity {
-  def getTileEntityClass: Class[_] = AEUtil.interfaceClass
+  def getBlockEntityClass: Class[_] = AEUtil.interfaceClass
 
   def createEnvironment(world: World, pos: BlockPos, side: Direction): ManagedEnvironment =
     new Environment(world.getBlockEntity(pos).asInstanceOf[TileEntity with ISegmentedInventory with IActionHost with IGridHost])
@@ -36,7 +36,7 @@ object DriverBlockInterface extends DriverSidedTileEntity {
 
     @Callback(doc = "function([slot:number]):table -- Get the configuration of the interface.")
     def getInterfaceConfiguration(context: Context, args: Arguments): Array[AnyRef] = {
-      val config = tileEntity.getInventoryByName("config")
+      val config = blockEntity.getInventoryByName("config")
       val slot = args.optSlot(config, 0, 0)
       val stack = config.getStackInSlot(slot)
       result(stack)
@@ -44,7 +44,7 @@ object DriverBlockInterface extends DriverSidedTileEntity {
 
     @Callback(doc = "function([slot:number][, database:address, entry:number[, size:number]]):boolean -- Configure the interface.")
     def setInterfaceConfiguration(context: Context, args: Arguments): Array[AnyRef] = {
-      val config = tileEntity.getInventoryByName("config")
+      val config = blockEntity.getInventoryByName("config")
       val slot = if (args.isString(0)) 0 else args.optSlot(config, 0, 0)
       val stack = if (args.count > 1) {
         val (address, entry, size) =

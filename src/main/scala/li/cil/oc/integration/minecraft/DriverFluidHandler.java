@@ -7,26 +7,26 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.integration.ManagedTileEntityEnvironment;
 import li.cil.oc.util.ExtendedArguments.TankProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public final class DriverFluidHandler implements DriverBlock {
     @Override
-    public boolean worksWith(final World world, final BlockPos pos, final Direction side) {
-        final TileEntity tileEntity = world.getBlockEntity(pos);
-        if (tileEntity == null) {
+    public boolean worksWith(final Level level, final BlockPos pos, final Direction side) {
+        final BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity == null) {
             return false;
         }
-        return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side).isPresent();
+        return blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side).isPresent();
     }
 
     @Override
-    public ManagedEnvironment createEnvironment(final World world, final BlockPos pos, final Direction side) {
-        return new Environment(world.getBlockEntity(pos).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side).orElse(null));
+    public ManagedEnvironment createEnvironment(final Level level, final BlockPos pos, final Direction side) {
+        return new Environment(level.getBlockEntity(pos).getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side).orElse(null));
     }
 
     public static final class Environment extends ManagedTileEntityEnvironment<IFluidHandler> {
@@ -36,9 +36,9 @@ public final class DriverFluidHandler implements DriverBlock {
 
         @Callback(doc = "function():table -- Get some information about the tank accessible from the specified side.")
         public Object[] getTankInfo(final Context context, final Arguments args) {
-            TankProperties[] props = new TankProperties[tileEntity.getTanks()];
+            TankProperties[] props = new TankProperties[blockEntity.getTanks()];
             for (int i = 0; i < props.length; i++) {
-                props[i] = new TankProperties(tileEntity.getTankCapacity(i), tileEntity.getFluidInTank(i));
+                props[i] = new TankProperties(blockEntity.getTankCapacity(i), blockEntity.getFluidInTank(i));
             }
             return props;
         }

@@ -3,12 +3,23 @@ package li.cil.oc.api.prefab;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * TileEntities can implement the {@link li.cil.oc.api.network.SidedEnvironment}
@@ -21,7 +32,7 @@ import net.minecraft.util.Direction;
  * network as an index structure to find other nodes connected to them.
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class TileEntitySidedEnvironment extends TileEntity implements SidedEnvironment, ITickableTileEntity {
+public abstract class BlockEntitySidedEnvironment extends BlockEntity implements SidedEnvironment, BlockEntityTicker<BlockEntitySidedEnvironment> {
     // See constructor.
     protected Node[] nodes = new Node[6];
 
@@ -62,8 +73,8 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
      *       .create(), ...);
      * </pre>
      */
-    protected TileEntitySidedEnvironment(TileEntityType<?> type, final Node... nodes) {
-        super(type);
+    protected BlockEntitySidedEnvironment(BlockEntityType<?> type, BlockPos position, BlockState state, final Node... nodes) {
+        super(type, position, state);
         System.arraycopy(nodes, 0, this.nodes, 0, Math.min(nodes.length, this.nodes.length));
     }
 
@@ -79,10 +90,17 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
         return nodes[side.ordinal()];
     }
 
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean canConnect(Direction side) {
+        System.err.println("TODO: Implement canConnect in TileEntitySidedEnvironment.java:91");
+        return false;
+    }
+
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void tick() {
+    public void tick(Level level, BlockPos position, BlockState state, BlockEntitySidedEnvironment blockEntity) {
         // On the first update, try to add our node to nearby networks. We do
         // this in the update logic, not in clearRemoved() because we need to access
         // neighboring tile entities, which isn't possible in clearRemoved().
@@ -97,6 +115,26 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     }
 
     @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        super.deserializeNBT(nbt);
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        return super.serializeNBT();
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+    }
+
+    @Override
     public void onChunkUnloaded() {
         super.onChunkUnloaded();
         // Make sure to remove the node from its network when its environment,
@@ -104,6 +142,27 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
         for (Node node : nodes) {
             if (node != null) node.remove();
         }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return super.getRenderBoundingBox();
+    }
+
+    @Override
+    public void requestModelDataUpdate() {
+        super.requestModelDataUpdate();
+    }
+
+    @NotNull
+    @Override
+    public IModelData getModelData() {
+        return super.getModelData();
     }
 
     @Override
@@ -119,8 +178,8 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void load(final BlockState state, final CompoundNBT nbt) {
-        super.load(state, nbt);
+    public void load(final @NotNull CompoundTag tag) {
+        super.load(tag);
         int index = 0;
         for (Node node : nodes) {
             // The host check may be superfluous for you. It's just there to allow
@@ -132,25 +191,30 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
                 // to continue working without interruption across loads. If the
                 // node is a power connector this is also required to restore the
                 // internal energy buffer of the node.
-                node.loadData(nbt.getCompound("oc:node" + index));
+                node.loadData(tag.getCompound("oc:node" + index));
             }
             ++index;
         }
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt) {
-        super.save(nbt);
+    public void saveAdditional(final @NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
         int index = 0;
         for (Node node : nodes) {
             // See load() regarding host check.
             if (node != null && node.host() == this) {
-                final CompoundNBT nodeNbt = new CompoundNBT();
+                final CompoundTag nodeNbt = new CompoundTag();
                 node.saveData(nodeNbt);
-                nbt.put("oc:node" + index, nodeNbt);
+                tag.put("oc:node" + index, nodeNbt);
             }
             ++index;
         }
-        return nbt;
+    }
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        return super.getCapability(cap);
     }
 }

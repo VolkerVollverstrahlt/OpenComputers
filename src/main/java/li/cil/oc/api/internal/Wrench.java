@@ -1,8 +1,8 @@
 package li.cil.oc.api.internal;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Implemented on items that are wrench-like tools.
@@ -20,10 +20,10 @@ public interface Wrench {
      * This is usually called from blocks' activation logic.
      *
      * @param player   the player using the tool
-     * @param world    the world containing the block the wrench is used on.
+     * @param level    the level containing the block the wrench is used on.
      * @param pos      the position of the block.
      * @param simulate whether to simulate the usage.
      * @return whether the wrench can be used on the block.
      */
-    boolean useWrenchOnBlock(PlayerEntity player, World world, BlockPos pos, boolean simulate);
+    boolean useWrenchOnBlock(Player player, Level level, BlockPos pos, boolean simulate);
 }

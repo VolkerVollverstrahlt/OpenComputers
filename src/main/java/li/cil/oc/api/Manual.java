@@ -5,10 +5,10 @@ import li.cil.oc.api.manual.ImageProvider;
 import li.cil.oc.api.manual.ImageRenderer;
 import li.cil.oc.api.manual.PathProvider;
 import li.cil.oc.api.manual.TabIconRenderer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 /**
  * This API allows interfacing with the in-game manual of OpenComputers.
@@ -41,7 +41,7 @@ public class Manual {
      * Register a path provider.
      * <br>
      * Path providers are used to find documentation entries for item stacks
-     * and blocks in the world.
+     * and blocks in the level.
      *
      * @param provider the provider to register.
      */
@@ -119,15 +119,15 @@ public class Manual {
     }
 
     /**
-     * Look up the documentation for the specified block in the world.
+     * Look up the documentation for the specified block in the level.
      *
-     * @param world the world containing the block.
+     * @param level the level containing the block.
      * @param pos   the position of the block.
      * @return the path to the page, <tt>null</tt> if none is known.
      */
-    public static String pathFor(World world, BlockPos pos) {
+    public static String pathFor(Level level, BlockPos pos) {
         if (API.manual != null)
-            return API.manual.pathFor(world, pos);
+            return API.manual.pathFor(level, pos);
         return null;
     }
 
@@ -153,7 +153,7 @@ public class Manual {
      *
      * @param player the player to open the manual for.
      */
-    public static void openFor(PlayerEntity player) {
+    public static void openFor(Player player) {
         if (API.manual != null)
             API.manual.openFor(player);
     }

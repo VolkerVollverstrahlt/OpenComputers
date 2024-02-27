@@ -156,12 +156,12 @@ object PacketSender {
           pb.writeUTF(event.getSound)
           CompressedStreamTools.write(event.getData, pb)
           event.getBlockEntity match {
-            case t: net.minecraft.tileentity.TileEntity =>
+            case t: net.minecraft.world.level.block.entity.BlockEntity =>
               pb.writeBoolean(true)
               pb.writeTileEntity(t)
             case _ =>
               pb.writeBoolean(false)
-              pb.writeUTF(event.getWorld.dimension.location.toString)
+              pb.writeUTF(event.getLevel.dimension.location.toString)
               pb.writeDouble(event.getX)
               pb.writeDouble(event.getY)
               pb.writeDouble(event.getZ)
@@ -191,7 +191,7 @@ object PacketSender {
           pb.writeTileEntity(t)
         case _ =>
           pb.writeBoolean(false)
-          pb.writeUTF(event.getWorld.dimension.location.toString)
+          pb.writeUTF(event.getLevel.dimension.location.toString)
           pb.writeDouble(event.getX)
           pb.writeDouble(event.getY)
           pb.writeDouble(event.getZ)

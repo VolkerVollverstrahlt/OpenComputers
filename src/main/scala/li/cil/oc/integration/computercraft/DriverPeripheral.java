@@ -24,10 +24,10 @@ import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.util.Reflection;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,9 +62,9 @@ public final class DriverPeripheral implements li.cil.oc.api.driver.DriverBlock 
         return false;
     }
 
-    private IPeripheral findPeripheral(final World world, final BlockPos pos, final Direction side) {
+    private IPeripheral findPeripheral(final Level level, final BlockPos pos, final Direction side) {
         try {
-            final IPeripheral p = dan200.computercraft.shared.Peripherals.getPeripheral(world, pos, side, cap -> {});
+            final IPeripheral p = dan200.computercraft.shared.Peripherals.getPeripheral(level, pos, side, cap -> {});
             if (!isBlacklisted(p)) {
                 return p;
             }
@@ -75,8 +75,8 @@ public final class DriverPeripheral implements li.cil.oc.api.driver.DriverBlock 
     }
 
     @Override
-    public boolean worksWith(final World world, final BlockPos pos, final Direction side) {
-        final TileEntity tileEntity = world.getBlockEntity(pos);
+    public boolean worksWith(final Level level, final BlockPos pos, final Direction side) {
+        final BlockEntity tileEntity = level.getBlockEntity(pos);
         return tileEntity != null
                 // This ensures we don't get duplicate components, in case the
                 // tile entity is natively compatible with OpenComputers.
@@ -85,12 +85,12 @@ public final class DriverPeripheral implements li.cil.oc.api.driver.DriverBlock 
                 // to be incompatible with OpenComputers when used directly.
                 && !isBlacklisted(tileEntity)
                 // Actual check if it's a peripheral.
-                && findPeripheral(world, pos, side) != null;
+                && findPeripheral(level, pos, side) != null;
     }
 
     @Override
-    public ManagedEnvironment createEnvironment(final World world, final BlockPos pos, final Direction side) {
-        return new Environment(findPeripheral(world, pos, side));
+    public ManagedEnvironment createEnvironment(final Level level, final BlockPos pos, final Direction side) {
+        return new Environment(findPeripheral(level, pos, side));
     }
 
     public static class Environment extends li.cil.oc.api.prefab.AbstractManagedEnvironment implements li.cil.oc.api.network.ManagedPeripheral, NamedBlock {

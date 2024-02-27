@@ -66,7 +66,7 @@ object DisintegrationProvider extends ScalaProvider("c4e7e3c2-8069-4fbb-b08e-74b
                 val allowed = !event.isCanceled && event.getUseBlock != Event.Result.DENY && event.getUseItem != Event.Result.DENY
                 val placingRestricted = world.getLevelData match {
                   case srvInfo: IServerWorldInfo => srvInfo.getGameType.isBlockPlacingRestricted
-                  case _ => true // Means it's not a server world (somehow).
+                  case _ => true // Means it's not a server level (somehow).
                 }
                 val adventureOk = !placingRestricted || player.mayUseItemAt(pos.toBlockPos, null, player.getItemInHand(Hand.MAIN_HAND))
                 if (allowed && adventureOk && !world.isAirBlock(pos)) {

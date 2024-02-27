@@ -143,7 +143,7 @@ object SaveHandler {
   }
 
   def load(nbt: CompoundNBT, name: String): Array[Byte] = {
-    // Since we have no world yet, we rely on the dimension we were saved in.
+    // Since we have no level yet, we rely on the dimension we were saved in.
     // Same goes for the chunk. This also works around issues with computers
     // being moved (e.g. Redstone in Motion).
     val dimension = nbt.getString("dimension")
@@ -227,7 +227,7 @@ object SaveHandler {
     if (!e.getWorld.isClientSide) {
       // Touch all externally saved data when loading, to avoid it getting
       // deleted in the next save (because the now - save time will usually
-      // be larger than the time out after loading a world again).
+      // be larger than the time out after loading a level again).
       SaveHandlerJava17Functionality.visitJava17(statePath)
     }
   }

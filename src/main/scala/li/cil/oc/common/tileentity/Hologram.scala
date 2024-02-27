@@ -82,7 +82,7 @@ class Hologram(selfType: TileEntityType[_ <: Hologram], var tier: Int) extends T
 
   var hasPower = true
 
-  // Rotation base state. Current rotation is based on world time. See HologramRenderer.
+  // Rotation base state. Current rotation is based on level time. See HologramRenderer.
   var rotationAngle = 0f
   var rotationX = 0f
   var rotationY = 0f
