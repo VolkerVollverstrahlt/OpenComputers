@@ -13,7 +13,7 @@ import net.minecraft.item.Item
 object Blocks {
   def init() {
     def defaultProps = Properties.of(Material.METAL).strength(2, 5)
-    def defaultItemProps = new Item.Properties().tab(CreativeTab)
+    def defaultItemProps = new Item.Properties().tab(CreativeTab.tab)
     Items.registerBlock(new Adapter(defaultProps), Constants.BlockName.Adapter, defaultItemProps)
     Items.registerBlock(new Assembler(defaultProps), Constants.BlockName.Assembler, defaultItemProps)
     Items.registerBlock(new Cable(defaultProps), Constants.BlockName.Cable, defaultItemProps)
@@ -31,7 +31,7 @@ object Blocks {
     Items.registerBlock(new Keyboard(Properties.of(Material.STONE).strength(2, 5).noOcclusion), Constants.BlockName.Keyboard, defaultItemProps)
     Items.registerBlock(new MotionSensor(defaultProps), Constants.BlockName.MotionSensor, defaultItemProps)
     Items.registerBlock(new PowerConverter(defaultProps), Constants.BlockName.PowerConverter,
-      new Item.Properties().tab(if (!Settings.get.ignorePower) CreativeTab else null))
+      new Item.Properties().tab(if (!Settings.get.ignorePower) CreativeTab.tab else null))
     Items.registerBlock(new PowerDistributor(defaultProps), Constants.BlockName.PowerDistributor, defaultItemProps)
     Items.registerBlock(new Printer(defaultProps), Constants.BlockName.Printer, defaultItemProps)
     Items.registerBlock(new Raid(defaultProps), Constants.BlockName.Raid, defaultItemProps)

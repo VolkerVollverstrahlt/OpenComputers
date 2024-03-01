@@ -330,7 +330,7 @@ object Items extends ItemAPI {
 
   // ----------------------------------------------------------------------- //
 
-  private def defaultProps = new Properties().tab(CreativeTab)
+  private def defaultProps = new Properties().tab(CreativeTab.tab)
 
   def init() {
     initMaterials()
