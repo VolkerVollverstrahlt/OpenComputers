@@ -2,12 +2,9 @@ package li.cil.oc.common.component
 
 import com.google.common.base.Strings
 import com.mojang.blaze3d.matrix.MatrixStack
-import li.cil.oc.Constants
+import li.cil.oc.{Constants, OpenComputers, Settings, api, util}
 import li.cil.oc.api.driver.DeviceInfo.DeviceAttribute
 import li.cil.oc.api.driver.DeviceInfo.DeviceClass
-import li.cil.oc.OpenComputers
-import li.cil.oc.Settings
-import li.cil.oc.api
 import li.cil.oc.api.driver.DeviceInfo
 import li.cil.oc.api.machine.Arguments
 import li.cil.oc.api.machine.Callback
@@ -27,7 +24,6 @@ import li.cil.oc.common.component.traits.VideoRamRasterizer
 import li.cil.oc.server.component.Keyboard
 import li.cil.oc.server.{ComponentTracker => ServerComponentTracker}
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
-import li.cil.oc.util
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.PackedColor
 import li.cil.oc.util.SideTracker
@@ -51,7 +47,7 @@ class TextBuffer(val host: EnvironmentHost) extends AbstractManagedEnvironment w
     withConnector().
     create()
 
-  private var maxResolution: (Int, Int) = Settings.screenResolutionsByTier(Tier.One)
+  private var maxResolution: (Int, Int) = (Settings.screenResolutionsByTier.get(Tier.One).getKey, Settings.screenResolutionsByTier.get(Tier.One).getValue)
 
   private var maxDepth = Settings.screenDepthsByTier(Tier.One)
 
@@ -90,7 +86,7 @@ class TextBuffer(val host: EnvironmentHost) extends AbstractManagedEnvironment w
   // their maximum resolution (pixel density) increases. For a basic screen
   // this is simply the configured cost.
   def computeFullyLitCost(): Double = {
-    val (w, h) = Settings.screenResolutionsByTier(0)
+    val (w, h) = (Settings.screenResolutionsByTier.get(0).getKey, Settings.screenResolutionsByTier.get(0).getValue)
     val mw = getMaximumWidth
     val mh = getMaximumHeight
     powerConsumptionPerTick * (mw * mh) / (w * h)

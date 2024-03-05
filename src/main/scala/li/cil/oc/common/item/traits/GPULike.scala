@@ -7,7 +7,7 @@ trait GPULike extends SimpleItem {
   def gpuTier: Int
 
   override protected def tooltipData: Seq[Any] = {
-    val (w, h) = Settings.screenResolutionsByTier(gpuTier)
+    val (w, h) = (Settings.screenResolutionsByTier.get(gpuTier).getKey, Settings.screenResolutionsByTier.get(gpuTier).getValue)
     val depth = PackedColor.Depth.bits(Settings.screenDepthsByTier(gpuTier))
     Seq(w, h, depth,
       gpuTier match {

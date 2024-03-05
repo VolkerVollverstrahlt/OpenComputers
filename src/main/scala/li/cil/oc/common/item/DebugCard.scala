@@ -34,14 +34,15 @@ class DebugCard(props: Properties) extends Item(props) with IForgeItem with trai
       if (data.access.exists(_.player == name)) data.access = None
       else data.access =
         Some(CDebugCard.AccessContext(name.getString, Settings.get.debugCardAccess match {
-          case wl: DebugCardAccess.Whitelist => wl.nonce(name.getString) match {
-            case Some(n) => n
-            case None =>
+          case wl: DebugCardAccess.Whitelist => {
+            if (wl.nonce(name.getString).isPresent) {
+              wl.nonce(name.getString).get()
+            } else {
               player.sendMessage(new StringTextComponent("§cYou are not whitelisted to use debug card"), Util.NIL_UUID)
               player.swing(Hand.MAIN_HAND)
               return new ActionResult[ItemStack](ActionResultType.FAIL, stack)
+            }
           }
-
           case _ => ""
         }))
 

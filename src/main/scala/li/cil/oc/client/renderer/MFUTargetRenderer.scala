@@ -2,8 +2,7 @@ package li.cil.oc.client.renderer
 
 import com.mojang.blaze3d.systems.RenderSystem
 import com.mojang.blaze3d.vertex.IVertexBuilder
-import li.cil.oc.Constants
-import li.cil.oc.Settings
+import li.cil.oc.{Constants, Settings}
 import li.cil.oc.api
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.RenderState

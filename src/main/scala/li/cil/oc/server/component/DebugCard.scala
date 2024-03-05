@@ -2,7 +2,6 @@ package li.cil.oc.server.component
 
 import java.util.UUID
 import java.util.function.Supplier
-
 import com.google.common.base.Strings
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
@@ -73,6 +72,7 @@ import net.minecraftforge.registries.IForgeRegistry
 import scala.collection.JavaConverters.{collectionAsScalaIterable, mapAsScalaMap}
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
+import scala.jdk.OptionConverters.{RichOption, RichOptional}
 
 class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with DebugNode {
   override val node: ComponentConnector = Network.newNode(this, Visibility.Neighbors).
@@ -388,7 +388,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
 
 object DebugCard {
   def checkAccess()(implicit ctx: Option[AccessContext]): Unit =
-    for (msg <- Settings.get.debugCardAccess.checkAccess(ctx))
+    for (msg <- Settings.get.debugCardAccess.checkAccess(ctx.toJava).toScala)
       throw new Exception(msg)
 
   object AccessContext {

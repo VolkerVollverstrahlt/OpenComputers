@@ -44,7 +44,7 @@ public class FontParserHex implements IGlyphProvider {
             long time = System.currentTimeMillis();
             int glyphCount = 0;
 
-            ResourceLocation loc = new ResourceLocation(Settings.resourceDomain(), "font.hex");
+            ResourceLocation loc = new ResourceLocation(Settings.resourceDomain, "font.hex");
             for (IResource resource : (List<IResource>) Minecraft.getInstance().getResourceManager().getResources(loc)) {
                 final InputStream font = resource.getInputStream();
                 try {
@@ -71,7 +71,7 @@ public class FontParserHex implements IGlyphProvider {
                                 glyphCount++;
                             }
                             glyphs.put(charCode, glyph);
-                        } else if (Settings.get().logHexFontErrors()) {
+                        } else if (Settings.get().logHexFontErrors) {
                             OpenComputers.log().warn(String.format("Size of glyph for code point U+%04X (%s) in font (%d) does not match expected width (%d), ignoring.", charCode, String.valueOf((char) charCode), glyphWidth, expectedWidth));
                         }
                     }

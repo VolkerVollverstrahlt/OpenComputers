@@ -2,9 +2,8 @@ package li.cil.oc.common.block
 
 import java.util
 
-import li.cil.oc.Constants
+import li.cil.oc.{Constants, Settings}
 import li.cil.oc.OpenComputers
-import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.client.gui
 import li.cil.oc.common.block.property.PropertyRotatable
@@ -41,7 +40,7 @@ class Screen(props: Properties, val tier: Int) extends RedstoneAware(props) {
   // ----------------------------------------------------------------------- //
 
   override protected def tooltipBody(stack: ItemStack, world: IBlockReader, tooltip: util.List[ITextComponent], advanced: ITooltipFlag) {
-    val (w, h) = Settings.screenResolutionsByTier(tier)
+    val (w, h) = (Settings.screenResolutionsByTier(tier).getKey, Settings.screenResolutionsByTier(tier).getValue)
     val depth = PackedColor.Depth.bits(Settings.screenDepthsByTier(tier))
     for (curr <- Tooltip.get(getClass.getSimpleName.toLowerCase, w, h, depth)) {
       tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))

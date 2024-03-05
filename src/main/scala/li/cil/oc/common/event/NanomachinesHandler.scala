@@ -45,7 +45,7 @@ object NanomachinesHandler {
             val sizeY = 12
             val width = window.getGuiScaledWidth
             val height = window.getGuiScaledHeight
-            val (x, y) = Settings.get.nanomachineHudPos
+            val (x, y) = (Settings.get.nanomachineHudPos(0), Settings.get.nanomachineHudPos(1))
             val left =
               math.min(width - sizeX,
                 if (x < 0) width / 2 - 91 - 12

@@ -2,9 +2,8 @@ package li.cil.oc.client.renderer.block
 
 import java.util.Random
 
-import li.cil.oc.Constants
+import li.cil.oc.{Constants, Settings}
 import li.cil.oc.OpenComputers
-import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.common.item.CustomModel
 import net.minecraft.block.BlockState

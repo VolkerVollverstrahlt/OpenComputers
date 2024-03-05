@@ -7,13 +7,11 @@ import li.cil.oc.*;
 import li.cil.oc.common.capabilities.Capabilities;
 import li.cil.oc.common.container.ContainerTypes;
 import li.cil.oc.common.entity.EntityTypes;
-import li.cil.oc.common.init.Items;
 import li.cil.oc.common.init.Items$;
 import li.cil.oc.common.nanomachines.Nanomachines$;
 import li.cil.oc.common.tileentity.TileEntityTypes;
 import li.cil.oc.common.recipe.RecipeSerializers;
 import li.cil.oc.integration.Mods;
-import li.cil.oc.server.driver.Registry;
 import li.cil.oc.server.driver.Registry$;
 import li.cil.oc.server.fs.FileSystem$;
 import li.cil.oc.server.loot.LootFunctions;
@@ -57,7 +55,7 @@ public class Proxy {
         li.cil.oc.api.API.machine = Machine$.MODULE$;
         li.cil.oc.api.API.nanomachines = Nanomachines$.MODULE$;
         li.cil.oc.api.API.network = Network$.MODULE$;
-        li.cil.oc.api.API.config = Settings$.MODULE$.get().config();
+        li.cil.oc.api.API.config = Settings.get().getConfig();
         if (LuaStateFactory$.MODULE$.isAvailable()) {
             if (LuaStateFactory$.MODULE$.include53()) {
                 li.cil.oc.api.Machine.add(NativeLua53Architecture.class);
@@ -72,7 +70,7 @@ public class Proxy {
         if (LuaStateFactory.includeLuaJ()) {
             li.cil.oc.api.Machine.add(LuaJLuaArchitecture.class);
         }
-        li.cil.oc.api.Machine.LuaArchitecture = Settings.get().forceLuaJ() ? LuaJLuaArchitecture.class : li.cil.oc.api.Machine.architectures().iterator().next();
+        li.cil.oc.api.Machine.LuaArchitecture = Settings.get().forceLuaJ ? LuaJLuaArchitecture.class : li.cil.oc.api.Machine.architectures().iterator().next();
     }
 
     @SubscribeEvent
@@ -93,7 +91,7 @@ public class Proxy {
             Mods.init();
             OpenComputers$.MODULE$.log().info("Initializing capabilities.");
             Capabilities.init();
-            li.cil.oc.api.API.isPowerEnabled = !Settings$.MODULE$.get().ignorePower();
+            li.cil.oc.api.API.isPowerEnabled = !Settings.get().ignorePower;
         });
     }
 

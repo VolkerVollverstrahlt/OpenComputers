@@ -63,9 +63,9 @@ class Robot(state: container.Robot, playerInventory: PlayerInventory, name: ITex
   private val maxBufferWidth = 240.0
   private val maxBufferHeight = 140.0
 
-  private def bufferRenderWidth = math.min(maxBufferWidth, TextBufferRenderCache.renderer.charRenderWidth * Settings.screenResolutionsByTier(0)._1)
+  private def bufferRenderWidth = math.min(maxBufferWidth, TextBufferRenderCache.renderer.charRenderWidth * Settings.screenResolutionsByTier.get(0).getKey)
 
-  private def bufferRenderHeight = math.min(maxBufferHeight, TextBufferRenderCache.renderer.charRenderHeight * Settings.screenResolutionsByTier(0)._2)
+  private def bufferRenderHeight = math.min(maxBufferHeight, TextBufferRenderCache.renderer.charRenderHeight * Settings.screenResolutionsByTier.get(0).getValue)
 
   override protected def bufferX: Int = (8 + (maxBufferWidth - bufferRenderWidth) / 2).toInt
 

@@ -48,7 +48,7 @@ public final class DriverPeripheral implements li.cil.oc.api.driver.DriverBlock 
         // additional entries via IMC.
         if (blacklist == null) {
             blacklist = new HashSet<Class<?>>();
-            for (String name : Settings.get().peripheralBlacklist()) {
+            for (String name : Settings.get().peripheralBlacklist) {
                 final Class<?> clazz = Reflection.getClass(name);
                 if (clazz != null) {
                     blacklist.add(clazz);

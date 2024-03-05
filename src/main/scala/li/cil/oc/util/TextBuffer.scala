@@ -1,7 +1,6 @@
 package li.cil.oc.util
 
-import li.cil.oc.Settings
-import li.cil.oc.api
+import li.cil.oc.{Settings, api}
 import net.minecraft.nbt._
 import net.minecraftforge.common.util.Constants.NBT
 
@@ -260,7 +259,8 @@ class TextBuffer(var width: Int, var height: Int, initialFormat: PackedColor.Col
   }
 
   def loadData(nbt: CompoundNBT): Unit = {
-    val maxResolution = math.max(Settings.screenResolutionsByTier.last._1, Settings.screenResolutionsByTier.last._2)
+    val last = Settings.screenResolutionsByTier.size()-1;
+    val maxResolution = math.max(Settings.screenResolutionsByTier.get(last).getKey, Settings.screenResolutionsByTier.get(last).getValue)
     val w = nbt.getInt("width") min maxResolution max 1
     val h = nbt.getInt("height") min maxResolution max 1
     size = (w, h)

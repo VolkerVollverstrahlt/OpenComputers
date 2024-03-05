@@ -36,7 +36,7 @@ class GraphicsCard(val tier: Int) extends AbstractManagedEnvironment with Device
     withConnector().
     create()
 
-  private val maxResolution = Settings.screenResolutionsByTier(tier)
+  private val maxResolution = (Settings.screenResolutionsByTier.get(tier).getKey, Settings.screenResolutionsByTier.get(tier).getValue)
 
   private val maxDepth = Settings.screenDepthsByTier(tier)
 

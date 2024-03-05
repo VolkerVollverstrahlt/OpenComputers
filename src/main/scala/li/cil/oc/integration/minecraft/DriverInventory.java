@@ -41,7 +41,7 @@ public final class DriverInventory extends DriverSidedTileEntity {
 
         public Environment(final TileEntity tileEntity, final World world) {
             super((IInventory) tileEntity, "inventory");
-            fakePlayer = FakePlayerFactory.get((ServerWorld) world, Settings.get().fakePlayerProfile());
+            fakePlayer = FakePlayerFactory.get((ServerWorld) world, Settings.get().fakePlayerProfile);
             position = BlockPosition.apply(tileEntity.getBlockPos(), world);
         }
 
@@ -145,7 +145,7 @@ public final class DriverInventory extends DriverSidedTileEntity {
 
         @Callback(doc = "function(slot:number):table -- Get a description of the item stack in the specified slot.")
         public Object[] getItem(final Context context, final Arguments args) {
-            if (Settings.get().allowItemStackInspection()) {
+            if (Settings.get().allowItemStackInspection) {
                 if (notPermitted()) return new Object[]{null, "permission denied"};
                 return new Object[]{tileEntity.getItem(checkSlot(args, 0))};
             } else {
@@ -155,7 +155,7 @@ public final class DriverInventory extends DriverSidedTileEntity {
 
         @Callback(doc = "function():table -- Get a list of descriptions for all item stacks in this inventory.")
         public Object[] getAllStacks(final Context context, final Arguments args) {
-            if (Settings.get().allowItemStackInspection()) {
+            if (Settings.get().allowItemStackInspection) {
                 if (notPermitted()) return new Object[]{null, "permission denied"};
                 ItemStack[] allStacks = new ItemStack[tileEntity.getContainerSize()];
                 for (int i = 0; i < tileEntity.getContainerSize(); i++) {

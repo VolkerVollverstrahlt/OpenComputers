@@ -3,10 +3,9 @@ package li.cil.oc.common.component
 import java.util
 import java.util.UUID
 
-import li.cil.oc.Constants
+import li.cil.oc.{Constants, Settings}
 import li.cil.oc.api.driver.DeviceInfo.DeviceAttribute
 import li.cil.oc.api.driver.DeviceInfo.DeviceClass
-import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.api.component.RackBusConnectable
 import li.cil.oc.api.component.RackMountable
@@ -42,7 +41,7 @@ class TerminalServer(val rack: api.internal.Rack, val slot: Int) extends Environ
   lazy val buffer = {
     val screenItem = api.Items.get(Constants.BlockName.ScreenTier1).createItemStack(1)
     val buffer = api.Driver.driverFor(screenItem, getClass).createEnvironment(screenItem, this).asInstanceOf[api.internal.TextBuffer]
-    val (maxWidth, maxHeight) = Settings.screenResolutionsByTier(Tier.Three)
+    val (maxWidth, maxHeight) = (Settings.screenResolutionsByTier.get(Tier.Three).getKey, Settings.screenResolutionsByTier.get(Tier.Three).getValue)
     buffer.setMaximumResolution(maxWidth, maxHeight)
     buffer.setMaximumColorDepth(Settings.screenDepthsByTier(Tier.Three))
     buffer
