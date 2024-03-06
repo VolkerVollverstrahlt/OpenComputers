@@ -48,7 +48,7 @@ public class Settings {
         if (nanomachineHudPosList.size() == 2) {
             nanomachineHudPos = nanomachineHudPosList.stream().mapToDouble(d->d).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of HUD coordiantes, ignoring.");
+            OpenComputers.log().warn("Bad number of HUD coordiantes, ignoring.");
             nanomachineHudPos = new double[] {-1.0, -1.0};
         }
     }
@@ -69,7 +69,7 @@ public class Settings {
         if (cpuComponentSupportList.size() == 4) {
             cpuComponentSupport = cpuComponentSupportList.stream().mapToInt(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of CPU component counts, ignoring.");
+            OpenComputers.log().warn("Bad number of CPU component counts, ignoring.");
             cpuComponentSupport = new int[] {8, 12, 16, 1024};
         }
     }
@@ -79,7 +79,7 @@ public class Settings {
         if (callBudgetsList.size() == 3) {
             callBudgets = callBudgetsList.stream().mapToDouble(d->d).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of call budgets, ignoring.");
+            OpenComputers.log().warn("Bad number of call budgets, ignoring.");
             callBudgets = new double[] {0.5, 1.0, 1.5};
         }
     }
@@ -101,7 +101,7 @@ public class Settings {
         if (ramSizesList.size() == 6) {
             ramSizes = ramSizesList.stream().mapToInt(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of RAM sizes, ignoring.");
+            OpenComputers.log().warn("Bad number of RAM sizes, ignoring.");
             ramSizes = new int[] {192, 256, 384, 512, 768, 1024};
         }
     }
@@ -126,7 +126,7 @@ public class Settings {
         if (upgradeFlightHeightList.size() == 2) {
             upgradeFlightHeight = upgradeFlightHeightList.stream().mapToInt(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of hover flight height counts, ignoring.");
+            OpenComputers.log().warn("Bad number of hover flight height counts, ignoring.");
             upgradeFlightHeight = new int[] {64, 256};
         }
     }
@@ -187,7 +187,7 @@ public class Settings {
         if (bufferCapacitorUpgradesList.size() == 3) {
             bufferCapacitorUpgrades = bufferCapacitorUpgradesList.stream().mapToDouble(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of battery upgrade buffer sizes, ignoring.");
+            OpenComputers.log().warn("Bad number of battery upgrade buffer sizes, ignoring.");
             bufferCapacitorUpgrades = new double[] {10000.0, 15000.0, 20000.0};
         }
     }
@@ -221,7 +221,7 @@ public class Settings {
         if (wirelessCostPerRangeList.size() == 2) {
             wirelessCostPerRange = wirelessCostPerRangeList.stream().mapToDouble(d->Math.max(d, 0.0)).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of wireless card energy costs, ignoring.");
+            OpenComputers.log().warn("Bad number of wireless card energy costs, ignoring.");
             wirelessCostPerRange = new double[] {0.05, 0.05};
         }
     }
@@ -264,7 +264,7 @@ public class Settings {
         if (caseRateList.size() == 3) {
             caseRate = new double[] { caseRateList.get(0), caseRateList.get(1), caseRateList.get(2), 9001.0 };
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of computer case conversion rates, ignoring.");
+            OpenComputers.log().warn("Bad number of computer case conversion rates, ignoring.");
             caseRate = new double[] {5.0, 10.0, 20.0, 9001.0};
         }
     }
@@ -313,7 +313,7 @@ public class Settings {
         if (hddSizesList.size() == 3) {
             hddSizes = hddSizesList.stream().mapToInt(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of HDD sizes, ignoring.");
+            OpenComputers.log().warn("Bad number of HDD sizes, ignoring.");
             hddSizes = new int[] {1024, 2048, 4096};
         }
     }
@@ -323,7 +323,7 @@ public class Settings {
         if (hddPlatterCountsList.size() == 3) {
             hddPlatterCounts = hddPlatterCountsList.stream().mapToInt(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of HDD platter counts, ignoring.");
+            OpenComputers.log().warn("Bad number of HDD platter counts, ignoring.");
             hddPlatterCounts = new int[] {2, 4, 6};
         }
     }
@@ -369,7 +369,7 @@ public class Settings {
         if (hologramMaxScaleByTierList.size() == 2) {
             hologramMaxScaleByTier = hologramMaxScaleByTierList.stream().mapToDouble(d->Math.max(d, 1.0)).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of hologram max scales, ignoring.");
+            OpenComputers.log().warn("Bad number of hologram max scales, ignoring.");
             hologramMaxScaleByTier = new double[] {3.0f, 4.0f};
         }
     }
@@ -379,7 +379,7 @@ public class Settings {
         if (hologramMaxTranslationByTierList.size() == 2) {
             hologramMaxTranslationByTier = hologramMaxTranslationByTierList.stream().mapToDouble(d->Math.max(d, 0.0)).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of hologram max translations, ignoring.");
+            OpenComputers.log().warn("Bad number of hologram max translations, ignoring.");
             hologramMaxTranslationByTier = new double[] {0.25f, 0.5f};
         }
     }
@@ -401,7 +401,7 @@ public class Settings {
         if (maxOpenPortsList.size() == 3) {
             maxOpenPorts = maxOpenPortsList.stream().mapToInt(i->Math.max(i, 0)).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of max open ports, ignoring.");
+            OpenComputers.log().warn("Bad number of max open ports, ignoring.");
             maxOpenPorts = new int[] {16, 1, 16};
         }
     }
@@ -412,7 +412,7 @@ public class Settings {
         if (maxWirelessRangeList.size() == 2) {
             maxWirelessRange = maxWirelessRangeList.stream().mapToDouble(d->Math.max(d, 0.0)).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of wireless card max ranges, ignoring.");
+            OpenComputers.log().warn("Bad number of wireless card max ranges, ignoring.");
             maxWirelessRange = new double[] {16.0f, 400.0f};
         }
     }
@@ -520,7 +520,7 @@ public class Settings {
             File wlFile = FMLPaths.CONFIGDIR.get().resolve(Paths.get("opencomputers", "debug_card_whitelist.txt")).toFile();
             debugCardAccess = new Settings.DebugCardAccess.Whitelist(wlFile);
         } else { // Fallback to most secure configuration
-            OpenComputers$.MODULE$.log().warn("Unknown debug card access type, falling back to `deny`. Allowed values: `allow`, `deny`, `whitelist`.");
+            OpenComputers.log().warn("Unknown debug card access type, falling back to `deny`. Allowed values: `allow`, `deny`, `whitelist`.");
             debugCardAccess = new Settings.DebugCardAccess.Forbidden();
         }
     }
@@ -545,7 +545,7 @@ public class Settings {
         if (vramSizesList.size() == 3) {
             vramSizes = vramSizesList.stream().mapToDouble(i->i).toArray();
         } else {
-            OpenComputers$.MODULE$.log().warn("Bad number of VRAM sizes (expected 3), ignoring.");
+            OpenComputers.log().warn("Bad number of VRAM sizes (expected 3), ignoring.");
             vramSizes = new double[] {1.0f, 2.0f, 3.0f};
         }
     }
@@ -570,7 +570,7 @@ public class Settings {
     }
 
     // Port of scala singleton object
-    public static final String resourceDomain = OpenComputers$.MODULE$.ID();
+    public static final String resourceDomain = OpenComputers.ID;
     public static final String namespace = "oc:";
     public static final String savePath = "opencomputers/";
     public static final String scriptPath = "/assets/" + resourceDomain + "/lua/";
@@ -705,7 +705,7 @@ public class Settings {
     // created by) against the current version to see if some hard changes
     // were made. If so, the new default values are copied over.
     private static Config patchConfig(Config config, Config defaults) {
-        DefaultArtifactVersion modVersion = new DefaultArtifactVersion(OpenComputers$.MODULE$.Version());
+        DefaultArtifactVersion modVersion = new DefaultArtifactVersion(OpenComputers.Version);
         DefaultArtifactVersion configVersion = new DefaultArtifactVersion(config.hasPath(prefix + "version") ? config.getString(prefix + "version") : "0.0.0");
 
         Config patched = config;

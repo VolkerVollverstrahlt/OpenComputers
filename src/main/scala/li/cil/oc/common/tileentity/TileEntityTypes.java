@@ -108,7 +108,7 @@ public final class TileEntityTypes {
 
     private static void register(IForgeRegistry<TileEntityType<?>> registry, String name, TileEntityType.Builder<?> builder) {
         TileEntityType<?> type = builder.build(null);
-        type.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
+        type.setRegistryName(new ResourceLocation(OpenComputers.ID, name));
         registry.register(type);
     }
 

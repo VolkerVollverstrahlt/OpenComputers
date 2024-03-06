@@ -513,7 +513,7 @@ object Items extends ItemAPI {
 
     val luaBios = {
       val code = new Array[Byte](4 * 1024)
-      val count = OpenComputers.getClass.getResourceAsStream(Settings.scriptPath + "bios.lua").read(code)
+      val count = classOf[OpenComputers].getResourceAsStream(Settings.scriptPath + "bios.lua").read(code)
       registerEEPROM("EEPROM (Lua BIOS)", code.take(count), null, readonly = false)
     }
     registerStack(luaBios, Constants.ItemName.LuaBios)

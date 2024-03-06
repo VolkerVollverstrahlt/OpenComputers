@@ -47,7 +47,7 @@ public class Proxy {
     }
 
     public void preInit() {
-        OpenComputers$.MODULE$.log().info("Initializing OpenComputers API.");
+        OpenComputers.log().info("Initializing OpenComputers API.");
         li.cil.oc.api.CreativeTab.instance = CreativeTab.tab;
         li.cil.oc.api.API.driver = Registry$.MODULE$;
         li.cil.oc.api.API.fileSystem = FileSystem$.MODULE$;
@@ -76,8 +76,8 @@ public class Proxy {
     @SubscribeEvent
     public void init(FMLCommonSetupEvent e) {
         e.enqueueWork(() -> {
-            OpenComputers$.MODULE$.channel_$eq(NetworkRegistry.newSimpleChannel(new ResourceLocation(OpenComputers$.MODULE$.ID(), "net_main"), () -> "", ""::equals, ""::equals));
-            OpenComputers$.MODULE$.channel().registerMessage(0, byte[].class,
+            OpenComputers.channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(OpenComputers.ID, "net_main"), () -> "", ""::equals, ""::equals);
+            OpenComputers.channel.registerMessage(0, byte[].class,
                     (msg, buff) -> buff.writeByteArray(msg), PacketBuffer::readByteArray,
                     (msg, ctx) -> {
                         NetworkEvent.Context context = ctx.get();
@@ -87,9 +87,9 @@ public class Proxy {
             PacketHandler$.MODULE$.serverHandler_$eq(li.cil.oc.server.PacketHandler$.MODULE$);;
             Loot.init();
             Achievement.init();
-            OpenComputers$.MODULE$.log().debug("Initializing mod integration.");
+            OpenComputers.log().debug("Initializing mod integration.");
             Mods.init();
-            OpenComputers$.MODULE$.log().info("Initializing capabilities.");
+            OpenComputers.log().info("Initializing capabilities.");
             Capabilities.init();
             li.cil.oc.api.API.isPowerEnabled = !Settings.get().ignorePower;
         });
@@ -108,24 +108,24 @@ public class Proxy {
     }
 
     private final Map<String, String> blockRenames = new HashMap<String, String>() {{
-            put(OpenComputers$.MODULE$.ID() + ":serverRack", Constants.BlockName$.MODULE$.Rack());
+            put(OpenComputers.ID + ":serverRack", Constants.BlockName$.MODULE$.Rack());
         }};
 
     private final Map<String, String> itemRenames = new HashMap<String, String>() {{
-        put(OpenComputers$.MODULE$.ID() + ":dataCard", Constants.ItemName$.MODULE$.DataCardTier1());
-        put(OpenComputers$.MODULE$.ID() + ":serverRack", Constants.BlockName$.MODULE$.Rack());
-        put(OpenComputers$.MODULE$.ID() + ":wlanCard", Constants.ItemName$.MODULE$.WirelessNetworkCardTier2());
+        put(OpenComputers.ID + ":dataCard", Constants.ItemName$.MODULE$.DataCardTier1());
+        put(OpenComputers.ID + ":serverRack", Constants.BlockName$.MODULE$.Rack());
+        put(OpenComputers.ID + ":wlanCard", Constants.ItemName$.MODULE$.WirelessNetworkCardTier2());
     }};
 
     @SubscribeEvent
     public void missingBlockMappings(MissingMappings<Block> e) {
-        for (MissingMappings.Mapping<Block> missing : e.getMappings(OpenComputers$.MODULE$.ID())) {
+        for (MissingMappings.Mapping<Block> missing : e.getMappings(OpenComputers.ID)) {
             String name = blockRenames.get(missing.key.getPath());
             if (name != null) {
                 if (Strings.isNullOrEmpty(name)) {
                     missing.ignore();
                 } else {
-                    missing.remap(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(OpenComputers$.MODULE$.ID(), name)));
+                    missing.remap(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(OpenComputers.ID, name)));
                 }
             } else {
                 missing.warn();
@@ -135,13 +135,13 @@ public class Proxy {
 
     @SubscribeEvent
     public void missingItemMappings(MissingMappings<Item> e) {
-        for (MissingMappings.Mapping<Item> missing : e.getMappings(OpenComputers$.MODULE$.ID())) {
+        for (MissingMappings.Mapping<Item> missing : e.getMappings(OpenComputers.ID)) {
             String name = itemRenames.get(missing.key.getPath());
             if (name != null) {
                 if (Strings.isNullOrEmpty(name)) {
                     missing.ignore();
                 } else {
-                    missing.remap(ForgeRegistries.ITEMS.getValue(new ResourceLocation(OpenComputers$.MODULE$.ID(), name)));
+                    missing.remap(ForgeRegistries.ITEMS.getValue(new ResourceLocation(OpenComputers.ID, name)));
                 }
             } else {
                 missing.warn();

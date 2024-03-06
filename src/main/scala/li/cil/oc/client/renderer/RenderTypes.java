@@ -28,21 +28,21 @@ public class RenderTypes extends RenderType {
 
     public static final TextureState ROBOT_CHASSIS_TEXTURE = new TextureState(Textures.Model$.MODULE$.Robot(), false, false);
 
-    public static final RenderType ROBOT_CHASSIS = create(OpenComputers.ID() + ":robot_chassis",
+    public static final RenderType ROBOT_CHASSIS = create(OpenComputers.ID + ":robot_chassis",
         DefaultVertexFormats.BLOCK, GL11.GL_TRIANGLES, 1024, State.builder()
             .setTextureState(ROBOT_CHASSIS_TEXTURE)
             .setDiffuseLightingState(DIFFUSE_LIGHTING)
             .setLightmapState(LIGHTMAP)
             .createCompositeState(true));
 
-    public static final RenderType ROBOT_LIGHT = create(OpenComputers.ID() + ":robot_light",
+    public static final RenderType ROBOT_LIGHT = create(OpenComputers.ID + ":robot_light",
         DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 256, State.builder()
             .setTextureState(ROBOT_CHASSIS_TEXTURE)
             .setTransparencyState(LIGHTNING_TRANSPARENCY)
             .createCompositeState(true));
 
     private static final RenderType createUpgrade(String name, ResourceLocation texture) {
-        return create(OpenComputers.ID() + ":upgrade_" + name,
+        return create(OpenComputers.ID + ":upgrade_" + name,
             POSITION_TEX_NORMAL, GL11.GL_QUADS, 1024, State.builder()
                 .setTextureState(new TextureState(texture, false, false))
                 .createCompositeState(true));
@@ -54,7 +54,7 @@ public class RenderTypes extends RenderType {
 
     public static final RenderType UPGRADE_INVENTORY = createUpgrade("inventory", Textures.Model$.MODULE$.UpgradeInventory());
 
-    public static final RenderType MFU_LINES = create(OpenComputers.ID() + ":mfu_lines",
+    public static final RenderType MFU_LINES = create(OpenComputers.ID + ":mfu_lines",
             DefaultVertexFormats.POSITION_COLOR, GL11.GL_LINES, 1024, State.builder()
                 .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                 .setDepthTestState(NO_DEPTH_TEST)
@@ -62,7 +62,7 @@ public class RenderTypes extends RenderType {
                 .setLineState(new LineState(OptionalDouble.of(2.0)))
                 .createCompositeState(false));
 
-    public static final RenderType MFU_QUADS = create(OpenComputers.ID() + ":mfu_quads",
+    public static final RenderType MFU_QUADS = create(OpenComputers.ID + ":mfu_quads",
             DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256, State.builder()
                 .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                 .setDepthTestState(NO_DEPTH_TEST)
@@ -71,21 +71,21 @@ public class RenderTypes extends RenderType {
                 .setWriteMaskState(COLOR_WRITE)
                 .createCompositeState(false));
 
-    public static final RenderType BLOCK_OVERLAY = create(OpenComputers.ID() + ":overlay_block",
+    public static final RenderType BLOCK_OVERLAY = create(OpenComputers.ID + ":overlay_block",
             DefaultVertexFormats.POSITION_TEX, GL11.GL_QUADS, 1024, State.builder()
                 .setTextureState(BLOCK_SHEET_MIPPED)
                 .setTransparencyState(LIGHTNING_TRANSPARENCY)
                 .setAlphaState(DEFAULT_ALPHA)
                 .createCompositeState(false));
 
-    public static final RenderType BLOCK_OVERLAY_COLOR = create(OpenComputers.ID() + ":overlay_block",
+    public static final RenderType BLOCK_OVERLAY_COLOR = create(OpenComputers.ID + ":overlay_block",
             DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 1024, State.builder()
                 .setTextureState(BLOCK_SHEET_MIPPED)
                 .setTransparencyState(LIGHTNING_TRANSPARENCY)
                 .setAlphaState(DEFAULT_ALPHA)
                 .createCompositeState(false));
 
-    public static final RenderType FONT_QUAD = create(OpenComputers.ID() + ":font_quad",
+    public static final RenderType FONT_QUAD = create(OpenComputers.ID + ":font_quad",
             DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 1024, State.builder()
                 .setWriteMaskState(COLOR_WRITE)
                 .createCompositeState(false));
@@ -116,7 +116,7 @@ public class RenderTypes extends RenderType {
     private static final LinearTexturingState LINEAR = new LinearTexturingState(true);
 
     public static final RenderType createFontTex(String name, ResourceLocation texture, boolean linear) {
-        return create(OpenComputers.ID() + ":font_stat_" + name,
+        return create(OpenComputers.ID + ":font_stat_" + name,
             DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 1024, State.builder()
                 // First parameter is blur (i.e. linear filter).
                 // We can't use it because it's also MAG_FILTER.
@@ -128,7 +128,7 @@ public class RenderTypes extends RenderType {
     }
 
     public static final RenderType createFontTex(int id) {
-        return create(OpenComputers.ID() + ":font_dyn_" + id,
+        return create(OpenComputers.ID + ":font_dyn_" + id,
             DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 1024, State.builder()
                 .setTexturingState(new CustomTextureState(id))
                 .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
@@ -137,7 +137,7 @@ public class RenderTypes extends RenderType {
     }
 
     public static final RenderType createTexturedQuad(String name, ResourceLocation texture, VertexFormat format, boolean additive) {
-        return create(OpenComputers.ID() + ":tex_quad_" + name,
+        return create(OpenComputers.ID + ":tex_quad_" + name,
             format, GL11.GL_QUADS, 1024, State.builder()
                 .setTextureState(new TextureState(texture, false, false))
                 .setTransparencyState(additive ? LIGHTNING_TRANSPARENCY : TRANSLUCENT_TRANSPARENCY)

@@ -9,7 +9,7 @@ import net.minecraft.util.NonNullList;
 import java.util.Objects;
 
 public class CreativeTab extends ItemGroup {
-    public static final CreativeTab tab = new CreativeTab(OpenComputers$.MODULE$.Name());
+    public static final CreativeTab tab = new CreativeTab(OpenComputers.Name);
 
     private static ItemStack stack = null;
 

@@ -21,7 +21,7 @@ public final class EntityTypes {
 
     private static void register(IForgeRegistry<EntityType<?>> registry, String name, EntityType.Builder<?> builder) {
         EntityType<?> type = builder.build(name);
-        type.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
+        type.setRegistryName(new ResourceLocation(OpenComputers.ID, name));
         registry.register(type);
     }
 

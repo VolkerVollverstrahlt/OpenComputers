@@ -80,7 +80,7 @@ public final class ContainerTypes {
 
     private static void register(IForgeRegistry<ContainerType<?>> registry, String name, IContainerFactory<?> factory) {
         ContainerType<?> type = IForgeContainerType.create(factory);
-        type.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
+        type.setRegistryName(new ResourceLocation(OpenComputers.ID, name));
         registry.register(type);
     }
 

@@ -67,7 +67,7 @@ object ExtendedRecipe {
       if (codeNbt != null && codeNbt.getType == StringNBT.TYPE) {
         val codePath = codeNbt.asInstanceOf[StringNBT].getAsString
         val code = new Array[Byte](Settings.get.eepromSize)
-        val count = OpenComputers.getClass.getResourceAsStream(Settings.scriptPath + codePath).read(code)
+        val count = classOf[OpenComputers].getResourceAsStream(Settings.scriptPath + codePath).read(code)
         nbt.putByteArray(Settings.namespace + "eeprom", code.take(count))
       }
       // Load EEPROM data (if it's a string)
@@ -75,7 +75,7 @@ object ExtendedRecipe {
       if (dataNbt != null && dataNbt.getType == StringNBT.TYPE) {
         val dataPath = dataNbt.asInstanceOf[StringNBT].getAsString
         val data = new Array[Byte](Settings.get.eepromDataSize)
-        val count = OpenComputers.getClass.getResourceAsStream(Settings.scriptPath + dataPath).read(data)
+        val count = classOf[OpenComputers].getResourceAsStream(Settings.scriptPath + dataPath).read(data)
         nbt.putByteArray(Settings.namespace + "userdata", data.take(count))
       }
     }

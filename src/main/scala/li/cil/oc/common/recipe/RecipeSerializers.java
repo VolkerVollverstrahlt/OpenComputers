@@ -30,7 +30,7 @@ public class RecipeSerializers {
     private static <S extends IForgeRegistryEntry<IRecipeSerializer<?>> & IRecipeSerializer<?>>
         void register(IForgeRegistry<IRecipeSerializer<?>> registry, String name, S serializer) {
 
-        serializer.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
+        serializer.setRegistryName(new ResourceLocation(OpenComputers.ID, name));
         registry.register(serializer);
     }
 
