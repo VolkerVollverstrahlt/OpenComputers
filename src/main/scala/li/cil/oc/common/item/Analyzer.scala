@@ -25,6 +25,8 @@ import net.minecraftforge.common.util.FakePlayer
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
+import scala.jdk.CollectionConverters.IterableHasAsJava
+
 object Analyzer {
   private lazy val analyzer = api.Items.get(Constants.ItemName.Analyzer)
 
@@ -76,7 +78,7 @@ object Analyzer {
               playerMP.sendMessage(Localization.Analyzer.Components(machine.componentCount, machine.maxComponents), Util.NIL_UUID)
               val list = machine.users
               if (list.nonEmpty) {
-                playerMP.sendMessage(Localization.Analyzer.Users(list), Util.NIL_UUID)
+                playerMP.sendMessage(Localization.Analyzer.Users(list.toSeq.asJava), Util.NIL_UUID)
               }
             }
           case _ =>
