@@ -108,13 +108,13 @@ public class Proxy {
     }
 
     private final Map<String, String> blockRenames = new HashMap<String, String>() {{
-            put(OpenComputers.ID + ":serverRack", Constants.BlockName$.MODULE$.Rack());
+            put(OpenComputers.ID + ":serverRack", Constants.BlockName.Rack);
         }};
 
     private final Map<String, String> itemRenames = new HashMap<String, String>() {{
-        put(OpenComputers.ID + ":dataCard", Constants.ItemName$.MODULE$.DataCardTier1());
-        put(OpenComputers.ID + ":serverRack", Constants.BlockName$.MODULE$.Rack());
-        put(OpenComputers.ID + ":wlanCard", Constants.ItemName$.MODULE$.WirelessNetworkCardTier2());
+        put(OpenComputers.ID + ":dataCard", Constants.ItemName.DataCardTier1);
+        put(OpenComputers.ID + ":serverRack", Constants.BlockName.Rack);
+        put(OpenComputers.ID + ":wlanCard", Constants.ItemName.WirelessNetworkCardTier2);
     }};
 
     @SubscribeEvent

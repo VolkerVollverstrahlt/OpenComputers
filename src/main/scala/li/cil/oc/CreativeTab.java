@@ -20,7 +20,7 @@ public class CreativeTab extends ItemGroup {
     @Override
     public ItemStack makeIcon() {
         if (stack == null) {
-            stack = Objects.requireNonNull(li.cil.oc.api.Items.get(Constants.BlockName$.MODULE$.CaseTier1())).createItemStack(1);
+            stack = Objects.requireNonNull(li.cil.oc.api.Items.get(Constants.BlockName.CaseTier1)).createItemStack(1);
         }
         return stack;
     }

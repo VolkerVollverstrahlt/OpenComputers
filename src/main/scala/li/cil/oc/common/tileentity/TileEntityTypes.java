@@ -45,65 +45,65 @@ public final class TileEntityTypes {
     @SubscribeEvent
     public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> e) {
         register(e.getRegistry(), "adapter", TileEntityType.Builder.of(() -> new Adapter(ADAPTER),
-            Items.get(Constants.BlockName$.MODULE$.Adapter()).block()));
+            Items.get(Constants.BlockName.Adapter).block()));
         register(e.getRegistry(), "assembler", TileEntityType.Builder.of(() -> new Assembler(ASSEMBLER),
-            Items.get(Constants.BlockName$.MODULE$.Assembler()).block()));
+            Items.get(Constants.BlockName.Assembler).block()));
         register(e.getRegistry(), "cable", TileEntityType.Builder.of(() -> new Cable(CABLE),
-            Items.get(Constants.BlockName$.MODULE$.Cable()).block()));
+            Items.get(Constants.BlockName.Cable).block()));
         register(e.getRegistry(), "capacitor", TileEntityType.Builder.of(() -> new Capacitor(CAPACITOR),
-            Items.get(Constants.BlockName$.MODULE$.Capacitor()).block()));
+            Items.get(Constants.BlockName.Capacitor).block()));
         register(e.getRegistry(), "carpeted_capacitor", TileEntityType.Builder.of(() -> new CarpetedCapacitor(CARPETED_CAPACITOR),
-            Items.get(Constants.BlockName$.MODULE$.CarpetedCapacitor()).block()));
+            Items.get(Constants.BlockName.CarpetedCapacitor).block()));
         register(e.getRegistry(), "case", TileEntityType.Builder.of(() -> new Case(CASE),
-            Items.get(Constants.BlockName$.MODULE$.CaseCreative()).block(),
-            Items.get(Constants.BlockName$.MODULE$.CaseTier1()).block(),
-            Items.get(Constants.BlockName$.MODULE$.CaseTier2()).block(),
-            Items.get(Constants.BlockName$.MODULE$.CaseTier3()).block()));
+            Items.get(Constants.BlockName.CaseCreative).block(),
+            Items.get(Constants.BlockName.CaseTier1).block(),
+            Items.get(Constants.BlockName.CaseTier2).block(),
+            Items.get(Constants.BlockName.CaseTier3).block()));
         register(e.getRegistry(), "charger", TileEntityType.Builder.of(() -> new Charger(CHARGER),
-            Items.get(Constants.BlockName$.MODULE$.Charger()).block()));
+            Items.get(Constants.BlockName.Charger).block()));
         register(e.getRegistry(), "disassembler", TileEntityType.Builder.of(() -> new Disassembler(DISASSEMBLER),
-            Items.get(Constants.BlockName$.MODULE$.Disassembler()).block()));
+            Items.get(Constants.BlockName.Disassembler).block()));
         register(e.getRegistry(), "disk_drive", TileEntityType.Builder.of(() -> new DiskDrive(DISK_DRIVE),
-            Items.get(Constants.BlockName$.MODULE$.DiskDrive()).block()));
+            Items.get(Constants.BlockName.DiskDrive).block()));
         register(e.getRegistry(), "geolyzer", TileEntityType.Builder.of(() -> new Geolyzer(GEOLYZER),
-            Items.get(Constants.BlockName$.MODULE$.Geolyzer()).block()));
+            Items.get(Constants.BlockName.Geolyzer).block()));
         register(e.getRegistry(), "hologram", TileEntityType.Builder.of(() -> new Hologram(HOLOGRAM),
-            Items.get(Constants.BlockName$.MODULE$.HologramTier1()).block(),
-            Items.get(Constants.BlockName$.MODULE$.HologramTier2()).block()));
+            Items.get(Constants.BlockName.HologramTier1).block(),
+            Items.get(Constants.BlockName.HologramTier2).block()));
         register(e.getRegistry(), "keyboard", TileEntityType.Builder.of(() -> new Keyboard(KEYBOARD),
-            Items.get(Constants.BlockName$.MODULE$.Keyboard()).block()));
+            Items.get(Constants.BlockName.Keyboard).block()));
         register(e.getRegistry(), "microcontroller", TileEntityType.Builder.of(() -> new Microcontroller(MICROCONTROLLER),
-            Items.get(Constants.BlockName$.MODULE$.Microcontroller()).block()));
+            Items.get(Constants.BlockName.Microcontroller).block()));
         register(e.getRegistry(), "motion_sensor", TileEntityType.Builder.of(() -> new MotionSensor(MOTION_SENSOR),
-            Items.get(Constants.BlockName$.MODULE$.MotionSensor()).block()));
+            Items.get(Constants.BlockName.MotionSensor).block()));
         register(e.getRegistry(), "net_splitter", TileEntityType.Builder.of(() -> new NetSplitter(NET_SPLITTER),
-            Items.get(Constants.BlockName$.MODULE$.NetSplitter()).block()));
+            Items.get(Constants.BlockName.NetSplitter).block()));
         register(e.getRegistry(), "power_converter", TileEntityType.Builder.of(() -> new PowerConverter(POWER_CONVERTER),
-            Items.get(Constants.BlockName$.MODULE$.PowerConverter()).block()));
+            Items.get(Constants.BlockName.PowerConverter).block()));
         register(e.getRegistry(), "power_distributor", TileEntityType.Builder.of(() -> new PowerDistributor(POWER_DISTRIBUTOR),
-            Items.get(Constants.BlockName$.MODULE$.PowerDistributor()).block()));
+            Items.get(Constants.BlockName.PowerDistributor).block()));
         register(e.getRegistry(), "print", TileEntityType.Builder.of(() -> new Print(PRINT),
-            Items.get(Constants.BlockName$.MODULE$.Print()).block()));
+            Items.get(Constants.BlockName.Print).block()));
         register(e.getRegistry(), "printer", TileEntityType.Builder.of(() -> new Printer(PRINTER),
-            Items.get(Constants.BlockName$.MODULE$.Printer()).block()));
+            Items.get(Constants.BlockName.Printer).block()));
         register(e.getRegistry(), "rack", TileEntityType.Builder.of(() -> new Rack(RACK),
-            Items.get(Constants.BlockName$.MODULE$.Rack()).block()));
+            Items.get(Constants.BlockName.Rack).block()));
         register(e.getRegistry(), "raid", TileEntityType.Builder.of(() -> new Raid(RAID),
-            Items.get(Constants.BlockName$.MODULE$.Raid()).block()));
+            Items.get(Constants.BlockName.Raid).block()));
         register(e.getRegistry(), "redstone_io", TileEntityType.Builder.of(() -> new Redstone(REDSTONE_IO),
-            Items.get(Constants.BlockName$.MODULE$.Redstone()).block()));
+            Items.get(Constants.BlockName.Redstone).block()));
         register(e.getRegistry(), "relay", TileEntityType.Builder.of(() -> new Relay(RELAY),
-            Items.get(Constants.BlockName$.MODULE$.Relay()).block()));
+            Items.get(Constants.BlockName.Relay).block()));
         register(e.getRegistry(), "robot", TileEntityType.Builder.of(() -> new RobotProxy(ROBOT),
-            Items.get(Constants.BlockName$.MODULE$.Robot()).block()));
+            Items.get(Constants.BlockName.Robot).block()));
         register(e.getRegistry(), "screen", TileEntityType.Builder.of(() -> new Screen(SCREEN),
-            Items.get(Constants.BlockName$.MODULE$.ScreenTier1()).block(),
-            Items.get(Constants.BlockName$.MODULE$.ScreenTier2()).block(),
-            Items.get(Constants.BlockName$.MODULE$.ScreenTier3()).block()));
+            Items.get(Constants.BlockName.ScreenTier1).block(),
+            Items.get(Constants.BlockName.ScreenTier2).block(),
+            Items.get(Constants.BlockName.ScreenTier3).block()));
         register(e.getRegistry(), "transposer", TileEntityType.Builder.of(() -> new Transposer(TRANSPOSER),
-            Items.get(Constants.BlockName$.MODULE$.Transposer()).block()));
+            Items.get(Constants.BlockName.Transposer).block()));
         register(e.getRegistry(), "waypoint", TileEntityType.Builder.of(() -> new Waypoint(WAYPOINT),
-            Items.get(Constants.BlockName$.MODULE$.Waypoint()).block()));
+            Items.get(Constants.BlockName.Waypoint).block()));
     }
 
     private static void register(IForgeRegistry<TileEntityType<?>> registry, String name, TileEntityType.Builder<?> builder) {
