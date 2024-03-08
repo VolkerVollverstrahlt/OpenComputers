@@ -13,10 +13,9 @@ import li.cil.oc.api.machine.Callback
 import li.cil.oc.api.machine.Context
 import li.cil.oc.api.network._
 import li.cil.oc.common.tileentity.traits.{RedstoneAware, RedstoneChangedEventArgs}
-import li.cil.oc.util.BlockPosition
-import li.cil.oc.util.ExtendedBlock._
+import li.cil.oc.util.{BlockPosition, ExtendedBlockTypes, RotationHelper}
+import li.cil.oc.util.ExtendedBlockTypes._
 import li.cil.oc.util.ExtendedWorld._
-import li.cil.oc.util.RotationHelper
 import net.minecraft.util.Direction
 
 import scala.collection.convert.ImplicitConversionsToJava._
@@ -80,7 +79,7 @@ trait RedstoneVanilla extends RedstoneSignaller with DeviceInfo {
     if (redstone.world.blockExists(blockPos)) {
       val block = redstone.world.getBlock(blockPos)
       if (redstone.world.getBlockState(blockPos.toBlockPos).hasAnalogOutputSignal) {
-        val comparatorOverride = block.getComparatorInputOverride(blockPos, side.getOpposite)
+        val comparatorOverride = ExtendedBlockTypes.extendedBlock(block).getComparatorInputOverride(blockPos, side.getOpposite)
         return result(comparatorOverride)
       }
     }

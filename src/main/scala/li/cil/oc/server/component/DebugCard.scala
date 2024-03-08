@@ -23,12 +23,11 @@ import li.cil.oc.server.PacketSender
 import li.cil.oc.server.network.DebugNetwork
 import li.cil.oc.server.network.DebugNetwork.DebugNode
 import li.cil.oc.server.component.DebugCard.AccessContext
-import li.cil.oc.util.BlockPosition
+import li.cil.oc.util.{BlockPosition, ExtendedBlockTypes, InventoryUtils}
 import li.cil.oc.util.ExtendedArguments._
-import li.cil.oc.util.ExtendedBlock._
+import li.cil.oc.util.ExtendedBlockTypes._
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ExtendedWorld._
-import li.cil.oc.util.InventoryUtils
 import net.minecraft.block.Block
 import net.minecraft.block.FlowingFluidBlock
 import net.minecraft.command.CommandSource
@@ -222,7 +221,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
           MinecraftForge.EVENT_BUS.post(event)
           result(event.isCanceled, "liquid", block)
         }
-        else if (block.isReplaceable(position)) {
+        else if (ExtendedBlockTypes.extendedBlock(block).isReplaceable(position)) {
           val event = new BlockEvent.BreakEvent(world, position.toBlockPos, state, fakePlayer)
           MinecraftForge.EVENT_BUS.post(event)
           result(event.isCanceled, "replaceable", block)

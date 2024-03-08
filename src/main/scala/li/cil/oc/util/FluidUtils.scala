@@ -1,6 +1,6 @@
 package li.cil.oc.util
 
-import li.cil.oc.util.ExtendedBlock._
+import ExtendedBlockTypes._
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.block.Block
 import net.minecraft.block.FlowingFluidBlock
@@ -119,7 +119,7 @@ object FluidUtils {
     def currentWrapper: Option[IFluidHandler] = if (position.world.get.blockExists(position)) position.world.get.getBlock(position) match {
       case block: IFluidBlock => Option(new FluidBlockWrapper(position, block))
       case block: FlowingFluidBlock if lookupFluidForBlock(block) != null && isFullLiquidBlock => Option(new LiquidBlockWrapper(position, block))
-      case block: Block if block.isAir(position) || block.isReplaceable(position) => Option(new AirBlockWrapper(position, block))
+      case block: Block if ExtendedBlockTypes.extendedBlock(block).isAir(position) || ExtendedBlockTypes.extendedBlock(block).isReplaceable(position) => Option(new AirBlockWrapper(position, block))
       case _ => None
     }
     else None
@@ -158,11 +158,11 @@ object FluidUtils {
 
   @Deprecated
   private class FluidBlockWrapper(val position: BlockPosition, val block: IFluidBlock) extends BlockWrapperBase {
-    override def getFluidInTank(tank: Int) = block.drain(position, FluidAction.SIMULATE)
+    override def getFluidInTank(tank: Int) = ExtendedBlockTypes.extendedFluidBlock(block).drain(position, FluidAction.SIMULATE)
 
-    override def isFluidValid(tank: Int, fluid: FluidStack): Boolean = block.getFluid.isSame(fluid.getFluid) && block.canDrain(position)
+    override def isFluidValid(tank: Int, fluid: FluidStack): Boolean = block.getFluid.isSame(fluid.getFluid) && ExtendedBlockTypes.extendedFluidBlock(block).canDrain(position)
 
-    override protected def uncheckedDrain(action: FluidAction): FluidStack = block.drain(position, action)
+    override protected def uncheckedDrain(action: FluidAction): FluidStack = ExtendedBlockTypes.extendedFluidBlock(block).drain(position, action)
   }
 
   private class LiquidBlockWrapper(val position: BlockPosition, val block: FlowingFluidBlock) extends BlockWrapperBase {

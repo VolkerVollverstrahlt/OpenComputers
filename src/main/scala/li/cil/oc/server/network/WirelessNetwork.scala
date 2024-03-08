@@ -2,10 +2,9 @@ package li.cil.oc.server.network
 
 import li.cil.oc.Settings
 import li.cil.oc.api.network.WirelessEndpoint
-import li.cil.oc.util.BlockPosition
-import li.cil.oc.util.ExtendedBlock._
+import li.cil.oc.util.{BlockPosition, ExtendedBlockTypes, RTree}
+import li.cil.oc.util.ExtendedBlockTypes._
 import li.cil.oc.util.ExtendedWorld._
-import li.cil.oc.util.RTree
 import net.minecraft.util.RegistryKey
 import net.minecraft.util.math.vector.Vector3d
 import net.minecraft.world.World
@@ -154,7 +153,7 @@ object WirelessNetwork {
         val z = (origin.z + v.z * rGap + side.z * rSide + top.z * rTop).toInt
         val blockPos = BlockPosition(x, y, z, world)
         if (world.isLoaded(blockPos)) Option(world.getBlock(blockPos)) match {
-          case Some(block) => hardness += block.getBlockHardness(blockPos)
+          case Some(block) => hardness += ExtendedBlockTypes.extendedBlock(block).getBlockHardness(blockPos)
           case _ =>
         }
       }

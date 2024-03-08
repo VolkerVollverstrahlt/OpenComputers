@@ -2,8 +2,8 @@ package li.cil.oc.server.component.traits
 
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
-import li.cil.oc.util.{BlockInventorySource, BlockPosition, EntityInventorySource, InventorySource}
-import li.cil.oc.util.ExtendedBlock._
+import li.cil.oc.util.{BlockInventorySource, BlockPosition, EntityInventorySource, ExtendedBlockTypes, InventorySource}
+import li.cil.oc.util.ExtendedBlockTypes._
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.block.FlowingFluidBlock
 import net.minecraft.entity.Entity
@@ -105,7 +105,7 @@ trait WorldAware {
           MinecraftForge.EVENT_BUS.post(event)
           (event.isCanceled, "liquid")
         }
-        else if (block.isReplaceable(blockPos)) {
+        else if (ExtendedBlockTypes.extendedBlock(block).isReplaceable(blockPos)) {
           val event = new BlockEvent.BreakEvent(world, blockPos.toBlockPos, state, fakePlayer)
           MinecraftForge.EVENT_BUS.post(event)
           (event.isCanceled, "replaceable")
