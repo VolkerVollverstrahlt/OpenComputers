@@ -1,16 +1,13 @@
 package li.cil.oc.common.block
 
 import java.util.Random
-
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Constants
 import li.cil.oc.api
 import li.cil.oc.common.block.property.PropertyRotatable
 import li.cil.oc.common.tileentity
-import li.cil.oc.util.BlockPosition
+import li.cil.oc.util.{BlockPosition, ExtendedEnumFacing, InventoryUtils, RotationHelper}
 import li.cil.oc.util.ExtendedEnumFacing._
-import li.cil.oc.util.InventoryUtils
-import li.cil.oc.util.RotationHelper
 import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
@@ -47,7 +44,7 @@ class Keyboard(props: Properties) extends SimpleBlock(props) {
       case side@(Direction.DOWN | Direction.UP) => (side, yaw)
       case _ => (yaw, Direction.UP)
     }
-    val side = forward.getRotation(up)
+    val side = new ExtendedEnumFacing(forward).getRotation(up)
     val sizes = Array(7f / 16f, 4f / 16f, 7f / 16f)
     val x0 = -up.getStepX * sizes(1) - side.getStepX * sizes(2) - forward.getStepX * sizes(0)
     val x1 = up.getStepX * sizes(1) + side.getStepX * sizes(2) - forward.getStepX * 0.5f

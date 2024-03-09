@@ -6,7 +6,7 @@ import li.cil.oc.common.block.property.PropertyRotatable
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedEnumFacing._
 import li.cil.oc.util.ExtendedWorld._
-import li.cil.oc.util.RotationHelper
+import li.cil.oc.util.{ExtendedEnumFacing, RotationHelper}
 import net.minecraft.block.BlockState
 import net.minecraft.entity.Entity
 import net.minecraft.util.Direction
@@ -79,9 +79,9 @@ trait Rotatable extends RotationAware with internal.Rotatable {
       case simple: SimpleBlock => {
         val valid = simple.getValidRotations(getLevel, getBlockPos)
         if (valid != null && valid.contains(axis)) {
-          val (newPitch, newYaw) = facing.getRotation(axis) match {
+          val (newPitch, newYaw) = new ExtendedEnumFacing(facing).getRotation(axis) match {
             case value@(Direction.UP | Direction.DOWN) =>
-              if (value == pitch) (value, yaw.getRotation(axis))
+              if (value == pitch) (value, new ExtendedEnumFacing(yaw).getRotation(axis))
               else (value, yaw)
             case value => (Direction.NORTH, value)
           }
