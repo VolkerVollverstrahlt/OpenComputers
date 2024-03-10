@@ -1,11 +1,9 @@
 package li.cil.oc.server.agent
 
 import java.util.function.Predicate
-
 import li.cil.oc.api.internal
 import li.cil.oc.util.ExtendedInventory._
-import li.cil.oc.util.InventoryUtils
-import li.cil.oc.util.StackOption
+import li.cil.oc.util.{ExtendedInventory, InventoryUtils, StackOption}
 import li.cil.oc.util.StackOption._
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -49,7 +47,8 @@ class Inventory(playerEntity: PlayerEntity, val agent: internal.Agent) extends P
   }
 
   override def add(stack: ItemStack): Boolean = {
-    val slots = this.indices.drop(agent.selectedSlot) ++ this.indices.take(agent.selectedSlot)
+    val extendedInventory = new ExtendedInventory(this)
+    val slots = extendedInventory.indices.drop(agent.selectedSlot) ++ extendedInventory.indices.take(agent.selectedSlot)
     InventoryUtils.insertIntoInventory(stack, InventoryUtils.asItemHandler(this), slots = Option(slots))
   }
 

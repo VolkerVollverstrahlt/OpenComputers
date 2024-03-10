@@ -1,7 +1,6 @@
 package li.cil.oc.common.tileentity
 
 import java.util
-
 import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.api.Driver
@@ -23,7 +22,7 @@ import li.cil.oc.integration.opencomputers.DriverRedstoneCard
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedInventory._
 import li.cil.oc.util.ExtendedNBT._
-import li.cil.oc.util.RotationHelper
+import li.cil.oc.util.{ExtendedInventory, RotationHelper}
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.IInventory
@@ -480,7 +479,7 @@ class Rack(selfType: TileEntityType[_ <: Rack]) extends TileEntity(selfType) wit
 
   def hasRedstoneCard: Boolean = components.exists {
     case Some(mountable: EnvironmentHost with RackMountable with IInventory) if isWorking(mountable) =>
-      mountable.exists(stack => DriverRedstoneCard.worksWith(stack, mountable.getClass))
+      new ExtendedInventory(mountable).exists(stack => DriverRedstoneCard.worksWith(stack, mountable.getClass))
     case _ => false
   }
 }

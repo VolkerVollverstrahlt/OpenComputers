@@ -7,6 +7,7 @@ import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.api.network.ManagedEnvironment
 import li.cil.oc.common.Slot
 import li.cil.oc.server.component
+import li.cil.oc.util.ExtendedInventory
 import li.cil.oc.util.ExtendedInventory._
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
@@ -19,7 +20,7 @@ object DriverServer extends Item with HostAware {
     api.Items.get(Constants.ItemName.ServerCreative))
 
   override def createEnvironment(stack: ItemStack, host: EnvironmentHost): ManagedEnvironment = host match {
-    case rack: api.internal.Rack => new component.Server(rack, rack.indexOf(stack))
+    case rack: api.internal.Rack => new component.Server(rack, new ExtendedInventory(rack).indexOf(stack))
     case _ => null // Welp.
   }
 

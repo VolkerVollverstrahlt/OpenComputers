@@ -6,7 +6,7 @@ import li.cil.oc.api.network.Node
 import li.cil.oc.common.EventHandler
 import li.cil.oc.common.inventory
 import li.cil.oc.util.ExtendedInventory._
-import li.cil.oc.util.StackOption
+import li.cil.oc.util.{ExtendedInventory, StackOption}
 import li.cil.oc.util.StackOption._
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
@@ -54,7 +54,7 @@ trait ComponentInventory extends Environment with Inventory with inventory.Compo
 
   private def applyInventoryChanges(): Unit = {
     updateScheduled = false
-    for (slot <- this.indices) {
+    for (slot <- new ExtendedInventory(this).indices) {
       (pendingRemovals(slot), pendingAdds(slot)) match {
         case (SomeStack(removed), SomeStack(added)) =>
           if (!removed.sameItem(added) || !ItemStack.tagMatches(removed, added)) {
