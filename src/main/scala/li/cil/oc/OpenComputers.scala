@@ -7,10 +7,10 @@ import li.cil.oc.common.init.Blocks
 import li.cil.oc.common.init.Items
 import li.cil.oc.integration.Mods
 import li.cil.oc.util.ThreadPoolFactory
-import net.minecraft.block.Block
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.Item
-import net.minecraft.world.World
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.Level
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.common.MinecraftForge
@@ -21,7 +21,6 @@ import net.minecraftforge.fml.ModContainer
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent
 import net.minecraftforge.fml.loading.FMLPaths
-import net.minecraftforge.fml.network.simple.SimpleChannel
 import net.minecraftforge.network.simple.SimpleChannel
 import net.minecraftforge.scorge.lang.ScorgeModLoadingContext
 import org.apache.logging.log4j.LogManager

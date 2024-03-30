@@ -7,12 +7,12 @@ import li.cil.oc.common.block
 import li.cil.oc.util.Color
 import li.cil.oc.util.ItemColorizer
 import li.cil.oc.util.ItemUtils
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.color.IBlockColor
-import net.minecraft.client.renderer.color.IItemColor
-import net.minecraft.item.DyeColor
+import net.minecraft.client.color.block.BlockColors
+import net.minecraft.client.color.item.ItemColors
+import net.minecraft.world.item.DyeColor
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.IItemProvider
