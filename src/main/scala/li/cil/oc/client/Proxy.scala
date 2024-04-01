@@ -30,11 +30,13 @@ import net.minecraft.client.renderer.entity.{EntityRenderer, EntityRenderDispatc
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.Level
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.client.registry.{IRenderFactory, RenderingRegistry}
+import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher
+import net.minecraft.client.renderer.entity.EntityRendererProvider
 import net.minecraftforge.client.ClientRegistry
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
-import net.minecraftforge.fml.network.NetworkRegistry
+import net.minecraftforge.network.NetworkRegistry
 
 private[oc] class Proxy extends CommonProxy {
   modBus.register(classOf[GuiTypes])
@@ -57,8 +59,8 @@ private[oc] class Proxy extends CommonProxy {
 
       ColorHandler.init()
 
-      RenderingRegistry.registerEntityRenderingHandler(EntityTypes.DRONE, new IRenderFactory[Drone] {
-        override def createRenderFor(manager: EntityRendererManager): EntityRenderer[_ >: Drone] = new DroneRenderer(manager)
+      RegisterRenderers.registerEntityRenderer(EntityTypes.DRONE, new EntityRendererProvider[Drone] {
+        override def createRenderFor(manager: EntityRenderDispatcher): EntityRenderer[_ >: Drone] = new DroneRenderer(manager)
       })
 
       BlockEntityRenderers.register(tileentity.TileEntityTypes.ADAPTER, AdapterRenderer)

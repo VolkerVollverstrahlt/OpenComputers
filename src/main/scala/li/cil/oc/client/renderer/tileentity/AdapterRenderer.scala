@@ -11,15 +11,15 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.texture.AtlasTexture
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.util.Direction
 
-object AdapterRenderer extends Function[TileEntityRendererDispatcher, AdapterRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new AdapterRenderer(dispatch)
+object AdapterRenderer extends Function[BlockEntityRenderDispatcher, AdapterRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new AdapterRenderer(dispatch)
 }
 
-class AdapterRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.Adapter](dispatch) {
+class AdapterRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.Adapter](dispatch) {
   override def render(adapter: tileentity.Adapter, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

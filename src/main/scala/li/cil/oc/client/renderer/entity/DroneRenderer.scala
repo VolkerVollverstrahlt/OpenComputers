@@ -7,11 +7,11 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.entity.EntityRenderer
-import net.minecraft.client.renderer.entity.EntityRendererManager
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.util.math.MathHelper
 
-class DroneRenderer(manager: EntityRendererManager) extends EntityRenderer[Drone](manager) {
+class DroneRenderer(manager: EntityRenderDispatcher) extends EntityRenderer[Drone](manager) {
   private val model = new ModelQuadcopter()
 
   override def render(entity: Drone, yaw: Float, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int): Unit = {
