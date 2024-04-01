@@ -1,6 +1,6 @@
 package li.cil.oc.client
 
-import com.mojang.blaze3d.systems.IRenderCall
+import com.mojang.blaze3d.pipeline.RenderCall
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.OpenComputers
 import li.cil.oc.api
@@ -25,12 +25,14 @@ import li.cil.oc.common.event.NanomachinesHandler
 import li.cil.oc.common.event.RackMountableRenderHandler
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.Audio
-import net.minecraft.block.Block
-import net.minecraft.client.renderer.entity.{EntityRenderer, EntityRendererManager}
-import net.minecraft.item.Item
-import net.minecraft.world.World
+import net.minecraft.world.level.block.Block
+import net.minecraft.client.renderer.entity.{EntityRenderer, EntityRenderDispatcher}
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.client.registry.{ClientRegistry, IRenderFactory, RenderingRegistry}
+import net.minecraftforge.fml.client.registry.{IRenderFactory, RenderingRegistry}
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
+import net.minecraftforge.client.ClientRegistry
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.fml.network.NetworkRegistry
 
@@ -45,7 +47,6 @@ private[oc] class Proxy extends CommonProxy {
 
     api.API.manual = client.Manual
   }
-
   override def init(e: FMLCommonSetupEvent) {
     super.init(e)
 
@@ -60,24 +61,24 @@ private[oc] class Proxy extends CommonProxy {
         override def createRenderFor(manager: EntityRendererManager): EntityRenderer[_ >: Drone] = new DroneRenderer(manager)
       })
 
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.ADAPTER, AdapterRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.ASSEMBLER, AssemblerRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.CASE, CaseRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.CHARGER, ChargerRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.DISASSEMBLER, DisassemblerRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.DISK_DRIVE, DiskDriveRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.GEOLYZER, GeolyzerRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.HOLOGRAM, HologramRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.MICROCONTROLLER, MicrocontrollerRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.NET_SPLITTER, NetSplitterRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.POWER_DISTRIBUTOR, PowerDistributorRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.PRINTER, PrinterRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.RAID, RaidRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.RACK, RackRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.RELAY, RelayRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.ROBOT, RobotRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.SCREEN, ScreenRenderer)
-      ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.TRANSPOSER, TransposerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.ADAPTER, AdapterRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.ASSEMBLER, AssemblerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.CASE, CaseRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.CHARGER, ChargerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.DISASSEMBLER, DisassemblerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.DISK_DRIVE, DiskDriveRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.GEOLYZER, GeolyzerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.HOLOGRAM, HologramRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.MICROCONTROLLER, MicrocontrollerRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.NET_SPLITTER, NetSplitterRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.POWER_DISTRIBUTOR, PowerDistributorRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.PRINTER, PrinterRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.RAID, RaidRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.RACK, RackRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.RELAY, RelayRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.ROBOT, RobotRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.SCREEN, ScreenRenderer)
+      BlockEntityRenderers.register(tileentity.TileEntityTypes.TRANSPOSER, TransposerRenderer)
 
       ClientRegistry.registerKeyBinding(KeyBindings.extendedTooltip)
       ClientRegistry.registerKeyBinding(KeyBindings.analyzeCopyAddr)

@@ -6,7 +6,7 @@ import java.security.InvalidParameterException
 import com.mojang.blaze3d.matrix.MatrixStack
 import li.cil.oc.api.network.{Environment, Message, Node}
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import li.cil.oc.api.internal.TextBuffer.ColorDepth
 import li.cil.oc.api
 import li.cil.oc.common.component.traits.{TextBufferProxy, VideoRamDevice, VideoRamRasterizer}
@@ -33,13 +33,13 @@ class GpuTextBuffer(val owner: String, val id: Int, val data: li.cil.oc.util.Tex
   override def onBufferCopy(col: Int, row: Int, w: Int, h: Int, tx: Int, ty: Int): Unit = dirty = true
   override def onBufferFill(col: Int, row: Int, w: Int, h: Int, c: Int): Unit = dirty = true
 
-  override def loadData(nbt: CompoundNBT): Unit = {
+  override def loadData(nbt: CompoundTag): Unit = {
     // the data is initially dirty because other devices don't know about it yet
     data.loadData(nbt)
     dirty = true
   }
 
-  override def saveData(nbt: CompoundNBT): Unit = {
+  override def saveData(nbt: CompoundTag): Unit = {
     data.saveData(nbt)
     dirty = false
   }
@@ -96,7 +96,7 @@ object ClientGpuTextBufferHandler {
     }
   }
 
-  def loadBuffer(buffer: api.internal.TextBuffer, owner: String, id: Int, nbt: CompoundNBT): Boolean = {
+  def loadBuffer(buffer: api.internal.TextBuffer, owner: String, id: Int, nbt: CompoundTag): Boolean = {
     buffer match {
       case screen: VideoRamRasterizer => screen.loadBuffer(owner, id, nbt)
       case _ => false // ignore, not compatible with bitblts

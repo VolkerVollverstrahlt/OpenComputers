@@ -287,7 +287,7 @@ class TextBuffer(var width: Int, var height: Int, initialFormat: PackedColor.Col
     }
   }
 
-  def saveData(nbt: CompoundNBT): Unit = {
+  def saveData(nbt: CompoundTag): Unit = {
     nbt.putInt("width", width)
     nbt.putInt("height", height)
 

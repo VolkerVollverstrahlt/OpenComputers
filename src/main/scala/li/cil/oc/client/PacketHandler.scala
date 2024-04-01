@@ -828,7 +828,7 @@ object PacketHandler extends CommonPacketHandler {
         val y = p.readDouble()
         val z = p.readDouble()
         val sound = p.readUTF()
-        val category = SoundCategory.values()(p.readByte())
+        val category = SoundSource.values()(p.readByte())
         val range = p.readFloat()
         world.playSound(p.player, x, y, z, new SoundEvent(new ResourceLocation(sound)), category, range / 15 + 0.5F, 1.0F)
       case _ => // Invalid packet.
@@ -868,5 +868,5 @@ object PacketHandler extends CommonPacketHandler {
       case _ => // Invalid packet.
     }
 
-  protected override def createParser(stream: InputStream, player: PlayerEntity) = new PacketParser(stream, Minecraft.getInstance.player)
+  protected override def createParser(stream: InputStream, player: Player) = new PacketParser(stream, Minecraft.getInstance.player)
 }
