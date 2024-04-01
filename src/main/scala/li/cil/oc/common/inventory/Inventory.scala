@@ -3,7 +3,7 @@ package li.cil.oc.common.inventory
 import li.cil.oc.Settings
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.StackOption
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TranslationTextComponent

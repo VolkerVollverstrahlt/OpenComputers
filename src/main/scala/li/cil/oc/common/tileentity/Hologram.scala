@@ -13,20 +13,20 @@ import li.cil.oc.api.network.Analyzable
 import li.cil.oc.api.network._
 import li.cil.oc.common.SaveHandler
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.tileentity.TileEntityType
-import net.minecraft.util.Direction
-import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.math.vector.Vector3d
+import net.minecraft.world.entity.player.Player
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.AABB
+import net.minecraft.world.phys.Vec3
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.mutable
 
-class Hologram(selfType: TileEntityType[_ <: Hologram], var tier: Int) extends TileEntity(selfType) with traits.Environment with SidedEnvironment with Analyzable with traits.RotatableTile with traits.Tickable with DeviceInfo {
+class Hologram(selfType: TileEntityType[_ <: Hologram], var tier: Int) extends BlockEntity(selfType) with traits.Environment with SidedEnvironment with Analyzable with traits.RotatableTile with traits.Tickable with DeviceInfo {
   def this(selfType: TileEntityType[_ <: Hologram]) = this(selfType, 0)
 
   val node = api.Network.newNode(this, Visibility.Network).
@@ -59,7 +59,7 @@ class Hologram(selfType: TileEntityType[_ <: Hologram], var tier: Int) extends T
   var scale = 1.0
 
   // Projection Y position offset - consider adding X,Z later perhaps
-  var translation = new Vector3d(0, 0, 0)
+  var translation = new Vec3(0, 0, 0)
 
   // Relative number of lit columns (for energy cost).
   var litRatio = -1.0

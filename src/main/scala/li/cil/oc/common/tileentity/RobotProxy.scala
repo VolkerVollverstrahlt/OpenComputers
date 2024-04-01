@@ -26,10 +26,10 @@ import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluid
-import net.minecraft.inventory.ISidedInventory
+import net.minecraft.world.WorldlyContainer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.tileentity.TileEntityType
 import net.minecraft.util.Direction
 import net.minecraft.util.math.AxisAlignedBB
@@ -37,8 +37,8 @@ import net.minecraft.util.text.ITextComponent
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidTank
 
-class RobotProxy(selfType: TileEntityType[_ <: RobotProxy], val robot: Robot) extends TileEntity(selfType)
-  with traits.Computer with traits.PowerInformation with traits.RotatableTile with ISidedInventory with IFluidHandler with internal.Robot {
+class RobotProxy(selfType: TileEntityType[_ <: RobotProxy], val robot: Robot) extends BlockEntity(selfType)
+  with traits.Computer with traits.PowerInformation with traits.RotatableTile with WorldlyContainer with IFluidHandler with internal.Robot {
 
   def this(selfType: TileEntityType[_ <: RobotProxy]) = this(selfType, new Robot())
 

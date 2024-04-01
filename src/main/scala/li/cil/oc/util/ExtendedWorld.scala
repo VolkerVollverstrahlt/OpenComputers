@@ -3,22 +3,22 @@ package li.cil.oc.util
 import li.cil.oc.api.network.EnvironmentHost
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.block.material.Material
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.Direction
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockReader
-import net.minecraft.world.World
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
 
 import scala.language.implicitConversions
 
 object ExtendedWorld {
 
-  implicit def extendedBlockAccess(world: IBlockReader): ExtendedBlockAccess = new ExtendedBlockAccess(world)
+  implicit def extendedBlockAccess(world: BlockGetter): ExtendedBlockAccess = new ExtendedBlockAccess(world)
 
-  implicit def extendedWorld(world: World): ExtendedWorld = new ExtendedWorld(world)
+  implicit def extendedWorld(world: Level): ExtendedWorld = new ExtendedWorld(world)
 
   class ExtendedBlockAccess(val world: IBlockReader) {
     def getBlock(position: BlockPosition) = world.getBlockState(position.toBlockPos).getBlock

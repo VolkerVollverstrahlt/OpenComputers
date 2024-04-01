@@ -42,10 +42,10 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.fluid.Fluid
 import net.minecraft.inventory.EquipmentSlotType
-import net.minecraft.inventory.container.INamedContainerProvider
+import net.minecraft.world.MenuProvider
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.util.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
@@ -71,8 +71,8 @@ import scala.collection.mutable
 // robot moves we only create a new proxy tile entity, hook the instance of this
 // class that was held by the old proxy to it and can then safely forget the
 // old proxy, which will be cleaned up by Minecraft like any other tile entity.
-class Robot extends TileEntity(TileEntityTypes.ROBOT) with traits.Computer with traits.PowerInformation with traits.RotatableTile
-  with IFluidHandler with internal.Robot with InventorySelection with TankSelection with INamedContainerProvider {
+class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with traits.PowerInformation with traits.RotatableTile
+  with IFluidHandler with internal.Robot with InventorySelection with TankSelection with MenuProvider {
 
   var proxy: RobotProxy = _
 

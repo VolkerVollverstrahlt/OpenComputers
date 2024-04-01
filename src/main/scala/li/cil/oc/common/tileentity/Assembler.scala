@@ -21,10 +21,10 @@ import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.INamedContainerProvider
+import net.minecraft.world.MenuProvider
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.tileentity.TileEntityType
 import net.minecraft.util.Direction
 import net.minecraft.util.text.StringTextComponent
@@ -33,8 +33,8 @@ import net.minecraftforge.api.distmarker.OnlyIn
 
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Assembler(selfType: TileEntityType[_ <: Assembler]) extends TileEntity(selfType) with traits.Environment with traits.PowerAcceptor
-  with traits.Inventory with SidedEnvironment with traits.StateAware with traits.Tickable with DeviceInfo with INamedContainerProvider {
+class Assembler(selfType: TileEntityType[_ <: Assembler]) extends BlockEntity(selfType) with traits.Environment with traits.PowerAcceptor
+  with traits.Inventory with SidedEnvironment with traits.StateAware with traits.Tickable with DeviceInfo with MenuProvider {
 
   val node = api.Network.newNode(this, Visibility.Network).
     withComponent("assembler").

@@ -23,7 +23,7 @@ import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.PlayerUtils
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.particles.ParticleTypes
 import net.minecraft.potion.Effect
 import net.minecraft.potion.Effects
@@ -348,7 +348,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
     nbt.setNewCompoundTag("configuration", configuration.saveData)
   }
 
-  def loadData(nbt: CompoundNBT): Unit = configuration.synchronized {
+  def loadData(nbt: CompoundTag): Unit = configuration.synchronized {
     uuid = nbt.getString("uuid")
     responsePort = nbt.getInt("port")
     storedEnergy = nbt.getDouble("energy")

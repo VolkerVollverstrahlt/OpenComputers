@@ -11,15 +11,15 @@ import li.cil.oc.util.SideTracker
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory._
+import net.minecraft.world.inventory._
 import net.minecraft.inventory.container.ClickType
-import net.minecraft.inventory.container.Container
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.inventory.container.ContainerType
 import net.minecraft.inventory.container.IContainerListener
 import net.minecraft.inventory.container.Slot
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.ByteArrayNBT
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.INBT
 import net.minecraft.nbt.IntArrayNBT
 import net.minecraftforge.api.distmarker.Dist
@@ -29,7 +29,7 @@ import net.minecraftforge.common.util.FakePlayer
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
 
-abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerInventory: PlayerInventory, val otherInventory: IInventory) extends Container(selfType, id) {
+abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerInventory: PlayerInventory, val otherInventory: IInventory) extends AbstractContainerMenu(selfType, id) {
   /** Number of player inventory slots to display horizontally. */
   protected val playerInventorySizeX = math.min(9, PlayerInventory.getSelectionSize)
 
@@ -202,7 +202,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
     }
   }
 
-  def updateCustomData(nbt: CompoundNBT): Unit = {
+  def updateCustomData(nbt: CompoundTag): Unit = {
     if (nbt.contains("delta")) {
       val delta = nbt.getCompound("delta")
       delta.getAllKeys.foreach {
