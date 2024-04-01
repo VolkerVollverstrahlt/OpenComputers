@@ -21,7 +21,7 @@ import scala.collection.mutable
 abstract class ComponentTracker {
   private val worlds = mutable.Map.empty[RegistryKey[Level], Cache[String, ManagedEnvironment]]
 
-  private def components(world: World) = {
+  private def components(world: Level) = {
     worlds.getOrElseUpdate(world.dimension,
       com.google.common.cache.CacheBuilder.newBuilder().
         weakValues().
@@ -29,27 +29,27 @@ abstract class ComponentTracker {
         build[String, ManagedEnvironment]())
   }
 
-  def add(world: World, address: String, component: ManagedEnvironment) {
+  def add(world: Level, address: String, component: ManagedEnvironment) {
     this.synchronized {
       components(world).put(address, component)
     }
   }
 
-  def remove(world: World, component: ManagedEnvironment) {
+  def remove(world: Level, component: ManagedEnvironment) {
     this.synchronized {
       components(world).invalidateAll(asJavaIterable(components(world).asMap().filter(_._2 == component).keys))
       components(world).cleanUp()
     }
   }
 
-  def get(world: World, address: String): Option[ManagedEnvironment] = this.synchronized {
+  def get(world: Level, address: String): Option[ManagedEnvironment] = this.synchronized {
     components(world).cleanUp()
     Option(components(world).getIfPresent(address))
   }
 
   @SubscribeEvent
   def onWorldUnload(e: WorldEvent.Unload): Unit = e.getWorld match {
-    case world: World => clear(world)
+    case world: Level => clear(world)
     case _ =>
   }
 

@@ -2,8 +2,8 @@ package li.cil.oc.common.block.property
 
 import java.util.function.Predicate
 
-import net.minecraft.state.DirectionProperty
-import net.minecraft.util.Direction
+import net.minecraft.world.level.block.state.properties.DirectionProperty
+import net.minecraft.core.Direction
 
 import scala.collection.convert.ImplicitConversionsToJava._
 

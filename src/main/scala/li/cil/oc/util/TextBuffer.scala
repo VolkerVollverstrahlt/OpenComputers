@@ -259,7 +259,7 @@ class TextBuffer(var width: Int, var height: Int, initialFormat: PackedColor.Col
     }
   }
 
-  def loadData(nbt: CompoundNBT): Unit = {
+  def loadData(nbt: CompoundTag): Unit = {
     val maxResolution = math.max(Settings.screenResolutionsByTier.last._1, Settings.screenResolutionsByTier.last._2)
     val w = nbt.getInt("width") min maxResolution max 1
     val h = nbt.getInt("height") min maxResolution max 1

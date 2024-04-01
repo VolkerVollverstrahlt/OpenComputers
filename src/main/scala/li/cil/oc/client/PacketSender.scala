@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.SoundCategory
 
 object PacketSender {

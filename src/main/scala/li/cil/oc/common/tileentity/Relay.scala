@@ -33,10 +33,10 @@ import li.cil.oc.server.network.QuantumNetwork
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item.ItemStack
+import net.minecraft.world.MenuProvider
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.tileentity.TileEntityType
 import net.minecraft.util.Direction
 import net.minecraft.util.Util
@@ -44,8 +44,8 @@ import net.minecraftforge.common.util.Constants.NBT
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-class Relay(selfType: TileEntityType[_ <: Relay]) extends TileEntity(selfType) with traits.Hub with traits.ComponentInventory
-  with traits.PowerAcceptor with Analyzable with WirelessEndpoint with QuantumNetwork.QuantumNode with INamedContainerProvider {
+class Relay(selfType: TileEntityType[_ <: Relay]) extends BlockEntity(selfType) with traits.Hub with traits.ComponentInventory
+  with traits.PowerAcceptor with Analyzable with WirelessEndpoint with QuantumNetwork.QuantumNode with MenuProvider {
 
   lazy final val WirelessNetworkCardTier1: ItemInfo = api.Items.get(Constants.ItemName.WirelessNetworkCardTier1)
   lazy final val WirelessNetworkCardTier2: ItemInfo = api.Items.get(Constants.ItemName.WirelessNetworkCardTier2)

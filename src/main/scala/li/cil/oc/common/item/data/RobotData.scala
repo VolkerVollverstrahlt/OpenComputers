@@ -10,8 +10,8 @@ import li.cil.oc.integration.opencomputers.DriverScreen
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ItemUtils
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
-import net.minecraftforge.common.util.Constants.NBT
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.Tag
 
 import scala.io.Source
 

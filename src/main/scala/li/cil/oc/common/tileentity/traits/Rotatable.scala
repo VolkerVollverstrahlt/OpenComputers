@@ -9,8 +9,8 @@ import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
 import net.minecraft.block.BlockState
 import net.minecraft.entity.Entity
-import net.minecraft.util.Direction
-import net.minecraft.util.Rotation
+import net.minecraft.core.Direction
+import net.minecraft.world.level.block.Rotation
 
 /** TileEntity base class for rotatable blocks. */
 trait Rotatable extends RotationAware with internal.Rotatable {

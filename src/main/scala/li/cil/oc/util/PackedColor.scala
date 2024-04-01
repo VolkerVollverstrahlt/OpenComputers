@@ -3,7 +3,7 @@ package li.cil.oc.util
 import li.cil.oc.Settings
 import li.cil.oc.api
 import li.cil.oc.api.Persistable
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 
 object PackedColor {
 
@@ -47,9 +47,9 @@ object PackedColor {
 
     def isFromPalette(value: Int): Boolean = false
 
-    override def loadData(nbt: CompoundNBT) {}
+    override def loadData(nbt: CompoundTag) {}
 
-    override def saveData(nbt: CompoundNBT) {}
+    override def saveData(nbt: CompoundTag) {}
   }
 
   class SingleBitFormat(val color: Int) extends ColorFormat {
