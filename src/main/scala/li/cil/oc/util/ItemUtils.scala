@@ -13,7 +13,7 @@ import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.BlockItem
 import net.minecraft.item.BucketItem
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.crafting.RecipeManager
 import net.minecraft.item.crafting.ICraftingRecipe
 import net.minecraft.item.crafting.IRecipe

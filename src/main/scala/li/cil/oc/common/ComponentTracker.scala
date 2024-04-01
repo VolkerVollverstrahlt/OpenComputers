@@ -4,7 +4,7 @@ import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import li.cil.oc.api.network.ManagedEnvironment
 import net.minecraft.util.RegistryKey
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
@@ -19,7 +19,7 @@ import scala.collection.mutable
  * containers. For now this is only used for screens / text buffer components.
  */
 abstract class ComponentTracker {
-  private val worlds = mutable.Map.empty[RegistryKey[World], Cache[String, ManagedEnvironment]]
+  private val worlds = mutable.Map.empty[RegistryKey[Level], Cache[String, ManagedEnvironment]]
 
   private def components(world: World) = {
     worlds.getOrElseUpdate(world.dimension,
@@ -53,7 +53,7 @@ abstract class ComponentTracker {
     case _ =>
   }
 
-  protected def clear(world: World): Unit = this.synchronized {
+  protected def clear(level: Level): Unit = this.synchronized {
     components(world).invalidateAll()
     components(world).cleanUp()
   }
