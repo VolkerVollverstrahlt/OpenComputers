@@ -2,22 +2,22 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity.Geolyzer
 import li.cil.oc.util.RenderState
-import net.minecraft.client.renderer.IRenderTypeBuffer
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 
-object GeolyzerRenderer extends Function[TileEntityRendererDispatcher, GeolyzerRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new GeolyzerRenderer(dispatch)
+object GeolyzerRenderer extends Function[BlockEntityRenderDispatcher, GeolyzerRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new GeolyzerRenderer(dispatch)
 }
 
-class GeolyzerRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Geolyzer](dispatch) {
-  override def render(geolyzer: Geolyzer, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+class GeolyzerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Geolyzer]() {
+  override def render(geolyzer: Geolyzer, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     RenderSystem.color4f(1, 1, 1, 1)

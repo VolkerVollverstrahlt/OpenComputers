@@ -20,18 +20,18 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.util.Color
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.INamedContainerProvider
+import net.minecraft.world.MenuProvider
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.tileentity.TileEntityType
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Case(selfType: TileEntityType[_ <: Case], var tier: Int) extends TileEntity(selfType) with traits.PowerAcceptor with traits.Computer with traits.Colored with internal.Case with DeviceInfo with INamedContainerProvider {
+class Case(selfType: TileEntityType[_ <: Case], var tier: Int) extends BlockEntity(selfType) with traits.PowerAcceptor with traits.Computer with traits.Colored with internal.Case with DeviceInfo with MenuProvider {
   def this(selfType: TileEntityType[_ <: Case]) = {
     this(selfType, 0)
     // If no tier was defined when constructing this case, then we don't yet know the inventory size
