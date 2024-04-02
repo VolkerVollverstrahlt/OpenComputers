@@ -3,8 +3,8 @@ package li.cil.oc.client.renderer.tileentity
 import java.util.function.Function
 
 import com.google.common.base.Strings
-import com.mojang.blaze3d.matrix.MatrixStack
-import com.mojang.blaze3d.vertex.IVertexBuilder
+import com.mojang.blaze3d.vertex.PoseStack
+import com.mojang.blaze3d.vertex.VertexConsumer
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import li.cil.oc.api.driver.item.UpgradeRenderer
@@ -18,18 +18,18 @@ import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer._
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.item.Items
-import net.minecraft.item.BlockItem
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
-import net.minecraft.util.math.vector.Vector3d
-import net.minecraft.util.math.vector.Vector3f
-import net.minecraft.util.math.vector.Matrix3f
-import net.minecraft.util.text.TextFormatting
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.BlockItem
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
+import net.minecraft.world.phys.Vec3
+import com.mojang.math.Vector3f
+import com.mojang.math.Matrix3f
+import net.minecraft.ChatFormatting
 import net.minecraftforge.client.ForgeHooksClient
 import net.minecraftforge.common.MinecraftForge
 
@@ -37,16 +37,16 @@ import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 
-object RobotRenderer extends Function[TileEntityRendererDispatcher, RobotRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new RobotRenderer(dispatch)
+object RobotRenderer extends Function[BlockEntityRenderDispatcher, RobotRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new RobotRenderer(dispatch)
 
   private val instance = new RobotRenderer(null)
 
-  def renderChassis(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, offset: Double = 0, isRunningOverride: Boolean = false) =
+  def renderChassis(stack: PoseStack, buffer: MultiBufferSource, light: Int, offset: Double = 0, isRunningOverride: Boolean = false) =
     instance.renderChassis(stack, buffer, light, null, offset, isRunningOverride)
 }
 
-class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.RobotProxy](dispatch) {
+class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.RobotProxy]() {
   private val mountPoints = new Array[RobotRenderEvent.MountPoint](7)
 
   private val slotNameMapping = Map(
@@ -70,33 +70,33 @@ class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRe
   private val gt = 0.5f + gap
   private val gb = 0.5f - gap
 
-  private implicit def extendWorldRenderer(self: IVertexBuilder): ExtendedWorldRenderer = new ExtendedWorldRenderer(self)
+  private implicit def extendWorldRenderer(self: VertexConsumer): ExtendedWorldRenderer = new ExtendedWorldRenderer(self)
 
-  private class ExtendedWorldRenderer(val buffer: IVertexBuilder) {
-    def normal(matrix: Matrix3f, normal: Vector3d): IVertexBuilder = {
+  private class ExtendedWorldRenderer(val buffer: VertexConsumer) {
+    def normal(matrix: Matrix3f, normal: Vec3): VertexConsumer = {
       val normalized = normal.normalize()
       buffer.normal(matrix, normalized.x.toFloat, normalized.y.toFloat, normalized.z.toFloat)
     }
   }
 
-  private def drawTop(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
+  private def drawTop(stack: PoseStack, buffer: MultiBufferSource, light: Int, red: Int, green: Int, blue: Int): Unit = {
     val r = buffer.getBuffer(RenderTypes.ROBOT_CHASSIS)
 
-    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, l, gt, h).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, l, gt, h).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gt, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vector3d(1, 0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gt, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vec3(1, 0.2, 0)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gt, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vector3d(1, 0.2, 0)).endVertex()
-    r.vertex(stack.last.pose, l, gt, l).color(red, green, blue, 0xFF).uv(0, 0).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, -1)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gt, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vec3(1, 0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, l, gt, l).color(red, green, blue, 0xFF).uv(0, 0).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, -1)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, l, gt, l).color(red, green, blue, 0xFF).uv(0, 0).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, -1)).endVertex()
-    r.vertex(stack.last.pose, l, gt, h).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(-1, 0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, l, gt, l).color(red, green, blue, 0xFF).uv(0, 0).uv2(light).normal(stack.last.normal, new Vec3(0, 0.2, -1)).endVertex()
+    r.vertex(stack.last.pose, l, gt, h).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(-1, 0.2, 0)).endVertex()
 
     r.vertex(stack.last.pose, l, gt, h).color(red, green, blue, 0xFF).uv(0, 1).uv2(light).normal(stack.last.normal, 0, -1, 0).endVertex()
     r.vertex(stack.last.pose, l, gt, l).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, 0, -1, 0).endVertex()
@@ -107,24 +107,24 @@ class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRe
     r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 1).uv2(light).normal(stack.last.normal, 0, -1, 0).endVertex()
   }
 
-  private def drawBottom(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
+  private def drawBottom(stack: PoseStack, buffer: MultiBufferSource, light: Int, red: Int, green: Int, blue: Int): Unit = {
     val r = buffer.getBuffer(RenderTypes.ROBOT_CHASSIS)
 
-    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, l, gb, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gb, l).color(red, green, blue, 0xFF).uv(1, 0).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, l, gb, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gb, l).color(red, green, blue, 0xFF).uv(1, 0).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gb, l).color(red, green, blue, 0xFF).uv(1, 0).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gb, h).color(red, green, blue, 0xFF).uv(1, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(1, -0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gb, l).color(red, green, blue, 0xFF).uv(1, 0).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gb, h).color(red, green, blue, 0xFF).uv(1, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(1, -0.2, 0)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, h, gb, h).color(red, green, blue, 0xFF).uv(1, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(1, -0.2, 0)).endVertex()
-    r.vertex(stack.last.pose, l, gb, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, -1)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, h, gb, h).color(red, green, blue, 0xFF).uv(1, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(1, -0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, l, gb, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, -1)).endVertex()
 
-    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
-    r.vertex(stack.last.pose, l, gb, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, -1)).endVertex()
-    r.vertex(stack.last.pose, l, gb, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vector3d(-1, -0.2, 0)).endVertex()
+    r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, 1)).endVertex()
+    r.vertex(stack.last.pose, l, gb, h).color(red, green, blue, 0xFF).uv(0.5f, 0.5f).uv2(light).normal(stack.last.normal, new Vec3(0, -0.2, -1)).endVertex()
+    r.vertex(stack.last.pose, l, gb, l).color(red, green, blue, 0xFF).uv(0.5f, 0).uv2(light).normal(stack.last.normal, new Vec3(-1, -0.2, 0)).endVertex()
 
     r.vertex(stack.last.pose, l, gb, l).color(red, green, blue, 0xFF).uv(0, 0.5f).uv2(light).normal(stack.last.normal, 0, 1, 0).endVertex()
     r.vertex(stack.last.pose, l, gb, h).color(red, green, blue, 0xFF).uv(0, 1).uv2(light).normal(stack.last.normal, 0, 1, 0).endVertex()
@@ -202,7 +202,7 @@ class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRe
     mountPoints(6).rotation.setW(0)
   }
 
-  def renderChassis(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, robot: tileentity.Robot = null, offset: Double = 0, isRunningOverride: Boolean = false) {
+  def renderChassis(stack: PoseStack, buffer: MultiBufferSource, light: Int, robot: tileentity.Robot = null, offset: Double = 0, isRunningOverride: Boolean = false) {
     val isRunning = if (robot == null) isRunningOverride else robot.isRunning
 
     val size = 0.3f
@@ -266,7 +266,7 @@ class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRe
     }
   }
 
-  override def render(proxy: tileentity.RobotProxy, f: Float, matrix: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(proxy: tileentity.RobotProxy, f: Float, matrix: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     val robot = proxy.robot
@@ -420,7 +420,7 @@ class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRe
       matrix.mulPose(Minecraft.getInstance.getEntityRenderDispatcher.cameraOrientation)
       matrix.scale(-scale, -scale, scale)
 
-      f.drawInBatch((if (EventHandler.isItTime) TextFormatting.OBFUSCATED.toString else "") + name,
+      f.drawInBatch((if (EventHandler.isItTime) ChatFormatting.OBFUSCATED.toString else "") + name,
         -halfWidth, 0, -1, false, matrix.last.pose, buffer, false, bgColor, light)
     }
 

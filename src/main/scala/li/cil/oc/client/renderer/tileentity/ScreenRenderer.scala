@@ -2,9 +2,9 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
-import com.mojang.blaze3d.vertex.IVertexBuilder
+import com.mojang.blaze3d.vertex.VertexConsumer
 import li.cil.oc.Constants
 import li.cil.oc.Settings
 import li.cil.oc.api
@@ -15,19 +15,19 @@ import li.cil.oc.common.tileentity.Screen
 import li.cil.oc.integration.util.Wrench
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.vector.Vector3f
+import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import com.mojang.math.Vector3f
 
-object ScreenRenderer extends Function[TileEntityRendererDispatcher, ScreenRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new ScreenRenderer(dispatch)
+object ScreenRenderer extends Function[BlockEntityRenderDispatcher, ScreenRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new ScreenRenderer(dispatch)
 }
 
-class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Screen](dispatch) {
+class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Screen]() {
   private val maxRenderDistanceSq = Settings.get.maxScreenTextRenderDistance * Settings.get.maxScreenTextRenderDistance
 
   private val fadeDistanceSq = Settings.get.screenTextFadeStartDistance * Settings.get.screenTextFadeStartDistance
@@ -40,7 +40,7 @@ class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityR
   // Rendering
   // ----------------------------------------------------------------------- //
 
-  override def render(screen: Screen, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(screen: Screen, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     this.screen = screen
@@ -93,7 +93,7 @@ class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityR
     RenderState.checkError(getClass.getName + ".render: leaving")
   }
 
-  private def transform(stack: MatrixStack) {
+  private def transform(stack: PoseStack) {
     screen.yaw match {
       case Direction.WEST => stack.mulPose(Vector3f.YP.rotationDegrees(-90))
       case Direction.NORTH => stack.mulPose(Vector3f.YP.rotationDegrees(180))
@@ -122,9 +122,9 @@ class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityR
     case _ => false
   }
 
-  private def drawOverlay(matrix: MatrixStack, r: IVertexBuilder) = if (screen.facing == Direction.UP || screen.facing == Direction.DOWN) {
+  private def drawOverlay(matrix: PoseStack, r: VertexConsumer) = if (screen.facing == Direction.UP || screen.facing == Direction.DOWN) {
     // Show up vector overlay when holding same screen block.
-    val stack = Minecraft.getInstance.player.getItemInHand(Hand.MAIN_HAND)
+    val stack = Minecraft.getInstance.player.getItemInHand(InteractionHand.MAIN_HAND)
     if (!stack.isEmpty) {
       if (Wrench.holdsApplicableWrench(Minecraft.getInstance.player, screen.getBlockPos) || isScreen(stack)) {
         matrix.pushPose()
@@ -142,7 +142,7 @@ class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityR
     }
   }
 
-  private def draw(stack: MatrixStack, alpha: Float, buffer: IRenderTypeBuffer) {
+  private def draw(stack: PoseStack, alpha: Float, buffer: MultiBufferSource) {
     RenderState.checkError(getClass.getName + ".draw: entering (aka: wasntme)")
 
     val sx = screen.width

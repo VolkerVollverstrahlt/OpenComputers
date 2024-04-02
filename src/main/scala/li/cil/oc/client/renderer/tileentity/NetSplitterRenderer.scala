@@ -2,25 +2,25 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
-import net.minecraft.client.renderer.texture.AtlasTexture
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
-import net.minecraft.util.Direction
+import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.client.renderer.texture.TextureAtlas
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
+import net.minecraft.core.Direction
 
-object NetSplitterRenderer extends Function[TileEntityRendererDispatcher, NetSplitterRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new NetSplitterRenderer(dispatch)
+object NetSplitterRenderer extends Function[BlockEntityRenderDispatcher, NetSplitterRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new NetSplitterRenderer(dispatch)
 }
 
-class NetSplitterRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.NetSplitter](dispatch) {
-  override def render(splitter: tileentity.NetSplitter, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+class NetSplitterRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.NetSplitter]() {
+  override def render(splitter: tileentity.NetSplitter, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     RenderSystem.color4f(1, 1, 1, 1)
@@ -32,7 +32,7 @@ class NetSplitterRenderer(dispatch: TileEntityRendererDispatcher) extends TileEn
       stack.scale(1.0025f, -1.0025f, 1.0025f)
       stack.translate(-0.5f, -0.5f, -0.5f)
 
-      Minecraft.getInstance().getModelManager().getAtlas(AtlasTexture.LOCATION_BLOCKS).bind()
+      Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).bind()
 
       val r = buffer.getBuffer(RenderTypes.BLOCK_OVERLAY)
 
